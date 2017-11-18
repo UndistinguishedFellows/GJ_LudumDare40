@@ -1,0 +1,12 @@
+https://www.json-generator.com/
+
+[
+  {
+    widthMap: 10,
+    heightMap: 10,
+    dataMap:[ 
+      '{{repeat(100)}}',
+      '{{integer(0,1)}}'
+    ]
+  }
+]
