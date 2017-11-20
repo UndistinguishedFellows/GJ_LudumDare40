@@ -41,8 +41,6 @@ public class MapLoader : MonoBehaviour {
         map.visualInfo = JsonUtility.FromJson<MapVisualInfo>(raw);
 
         CreateMap(map);
-
-        map.OnMapLoaded();
     }
 
     public void SaveMap()
@@ -62,6 +60,8 @@ public class MapLoader : MonoBehaviour {
 
     public void CreateMap(Map map)
     {
+        map.tiles = new Tile[map.visualInfo.width, map.visualInfo.height]; //Dont really like to do this here but cant do it on OnMapLoad
+
         for (int x = 0; x < map.visualInfo.width; ++x)
         {
             for (int y = 0; y < map.visualInfo.height; ++y)
@@ -77,11 +77,21 @@ public class MapLoader : MonoBehaviour {
                     pref = obstacles[Random.Range(0, obstacles.Length)];
                 }
 
-                Vector3 spawnPos = new Vector3(x - (map.Width / 2) + (transform.localScale.x / 2), -y + (map.Height / 2) - (transform.localScale.y / 2), 0);
+                Vector3 spawnPos = new Vector3(x - (map.visualInfo.width / 2) + (transform.localScale.x / 2), -y + (map.visualInfo.height / 2) - (transform.localScale.y / 2), 0);
                 GameObject obj = Instantiate(pref, spawnPos, Quaternion.identity, mapObject.transform);
-                //TODO: Get obj tile script and set neighbours
+                
+                //Add tiles into map tiles array
+                Tile tile = obj.GetComponent<Tile>();
+                if (tile != null)
+                {
+                    map.tiles[x, y] = tile;
+                    tile.SetTile(x, y);
+                }
+                else Debug.LogError(string.Format("Tile {0}, {1} has no Tile script added.", x, y));
             }
         }
+        
+        map.OnMapLoaded();
     }
 
     public void ClearMap()

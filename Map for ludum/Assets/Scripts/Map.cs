@@ -43,10 +43,44 @@ public class Map : MonoBehaviour {
     {
         width = visualInfo.width;
         height = visualInfo.height;
+        
+        //Debug.Log(string.Format("Map loaded: Width {0}, Height {1}", width, height));
 
-        Debug.Log(string.Format("Map loaded: Width {0}, Height {1}", width, height));
-
-
+        if (tiles == null)
+        {
+            Debug.LogError("Tiles array was not created.");
+        }
+        else
+        {
+            for (int x = 0; x < width; ++x)
+            {
+                for (int y = 0; y < height; ++y)
+                {
+                    Tile tile = tiles[x, y];
+                    if (tile != null)
+                    {
+                        int checkX = tile.gridPosX + 1;
+                        int checkY = tile.gridPosY - 1;
+                        //Debug.Log("----------");
+                        //Debug.Log("Gpos: " + tile.gridPosX + " " + tile.gridPosY);
+                        //Debug.Log("Top: x,y:" + checkX + " " + checkY);
+                        if (checkY >= 0) tile.neighbours[0] = tiles[tile.gridPosX, checkY]; //Top
+                        else tile.neighbours[0] = null;
+                        checkY += 2; //Set to bottom
+                        //Debug.Log("Right: x,y:" + checkX + " " + checkY);
+                        if (checkX < width) tile.neighbours[1] = tiles[checkX, tile.gridPosY]; //Right
+                        else tile.neighbours[1] = null;
+                        checkX -= 2; //Set to left
+                        //Debug.Log("Bottom: x,y:"  + checkX + " " + checkY);
+                        if (checkY < height) tile.neighbours[2] = tiles[tile.gridPosX, checkY]; //Bottom
+                        else tile.neighbours[2] = null;
+                        //Debug.Log("Left: x,y:" + checkX + " " + checkY);
+                        if (checkX >= 0) tile.neighbours[3] = tiles[checkX, tile.gridPosY]; //Left
+                        else tile.neighbours[3] = null;
+                    }
+                }
+            }
+        }
     }
 
     public List<Tile> GetNeightbours(Tile tile)

@@ -19,7 +19,10 @@ public class Tile : MonoBehaviour {
     private int gCost;
     private int hCost;
 
+    [HideInInspector]
     public Tile parent;
+    //[HideInInspector]
+    public Tile[] neighbours = new Tile[4]; // 0:Top, 1:Right, 2:Bottom, 3:Left
     
 
 	#endregion
@@ -42,9 +45,10 @@ public class Tile : MonoBehaviour {
 		
 	}
 
-    void OnDrawGuizmos()
+    void OnDrawGizmosSelected()
     {
-        
+        Gizmos.color = tileType == TileType.TileObstacle ? Color.red : Color.green;
+        Gizmos.DrawWireCube(transform.position, transform.localScale);
     }
 
 	#endregion
