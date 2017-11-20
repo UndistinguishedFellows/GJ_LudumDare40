@@ -13,15 +13,22 @@ public class Tile : MonoBehaviour {
 	#region Variables
 
     public TileType tileType;
+
+
+    //For pathfinding 
     [HideInInspector]
     public int gridPosX, gridPosY;
 
-    private int gCost;
-    private int hCost;
+    [HideInInspector]
+    public int gCost;
+    [HideInInspector]
+    public int hCost;
 
     [HideInInspector]
     public Tile parent;
-    //[HideInInspector]
+
+
+    [HideInInspector]
     public Tile[] neighbours = new Tile[4]; // 0:Top, 1:Right, 2:Bottom, 3:Left
     
 
@@ -47,8 +54,8 @@ public class Tile : MonoBehaviour {
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = tileType == TileType.TileObstacle ? Color.red : Color.green;
-        Gizmos.DrawWireCube(transform.position, transform.localScale);
+       // Gizmos.color = tileType == TileType.TileObstacle ? Color.red : Color.green;
+       // Gizmos.DrawWireCube(transform.position, transform.localScale);
     }
 
 	#endregion

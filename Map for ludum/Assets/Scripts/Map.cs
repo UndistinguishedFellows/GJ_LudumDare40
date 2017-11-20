@@ -5,7 +5,7 @@ using UnityEngine;
 public class Map : MonoBehaviour {
 
 	#region Variables
-
+    
     [HideInInspector]
     public MapVisualInfo visualInfo;
     public Tile[,] tiles;
@@ -24,8 +24,8 @@ public class Map : MonoBehaviour {
 
 	void Update () 
 	{
-		
-	}
+
+    }
 
 	#endregion
 
@@ -100,4 +100,22 @@ public class Map : MonoBehaviour {
 
         return ret;
     }
+
+    public Tile TileFromWorldPoint(Vector3 worldPosition)
+    {
+        float percentageX = (worldPosition.x + width / 2) / width; //Use width assuming each tile has a size of one so numtiles * 1 = width
+        float percentageY = 1 - (worldPosition.y + height/ 2) / height;
+        percentageX = Mathf.Clamp01(percentageX);
+        percentageY = Mathf.Clamp01(percentageY);
+        
+        int x = (int)(width * percentageX);
+        int y = (int)(height * percentageY);
+        
+
+        if (x >= 0 && y >= 0 && x < width && y < height)
+            return tiles[x, y];
+        else
+            return null;
+    }
+    
 }
