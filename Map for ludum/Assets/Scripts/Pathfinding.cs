@@ -106,7 +106,6 @@ public class Pathfinding : MonoBehaviour
         {
             foreach (Tile tile in _path)
             {
-                Debug.Log("Hi");
                 Gizmos.color = Color.white;
                 Gizmos.DrawCube(tile.transform.position, Vector3.one);
             }
