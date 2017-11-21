@@ -1,4 +1,4 @@
-﻿#define DEBUG_REACHABLE_TILES
+﻿//#define DEBUG_REACHABLE_TILES
 
 using System.Collections;
 using System.Collections.Generic;
@@ -18,6 +18,7 @@ public class Pathfinding : MonoBehaviour
     //Testing vars
     public bool showPath = true;
     public bool waitForKeyToCalc = false;
+    public bool useDiagonalsOnGettingDistace = false;
     public int unitRange;
     private List<Tile> _path;
     private List<Tile> _reachableTiles;
@@ -187,13 +188,18 @@ public class Pathfinding : MonoBehaviour
         int dstY = Mathf.Abs(a.gridPosY - b.gridPosY);
 
         //In order to dont use diagonals will just add the absolute values of both distances. TODO: Must check the rsult calculating distacnes with diagonals
-        return Mathf.Abs(dstX) + Mathf.Abs(dstY);
-
-        //For diagonals
-        //if (dstX > dstY)
-        //    return 14 * dstY + 10 * (dstX - dstY);
-        //else
-        //    return 14 * dstX + 10 * (dstY - dstX);
+        if (!useDiagonalsOnGettingDistace)
+        {
+            return dstX + dstY;
+        }
+        else
+        {
+            //For diagonals
+            if (dstX > dstY)
+                return 14 * dstY + 10 * (dstX - dstY);
+            else
+                return 14 * dstX + 10 * (dstY - dstX);
+        }
     }
 
     void OnDrawGizmos()
