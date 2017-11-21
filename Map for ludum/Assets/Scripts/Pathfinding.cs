@@ -1,4 +1,4 @@
-﻿//#define DEBUG_REACHABLE_TILES
+﻿#define DEBUG_REACHABLE_TILES
 
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +17,7 @@ public class Pathfinding : MonoBehaviour
 
     //Testing vars
     public bool showPath = true;
+    public bool waitForKeyToCalc = false;
     public int unitRange;
     private List<Tile> _path;
     private List<Tile> _reachableTiles;
@@ -30,7 +31,7 @@ public class Pathfinding : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || !waitForKeyToCalc)
         {
             Stopwatch watch;
             watch = new Stopwatch();
@@ -136,8 +137,7 @@ public class Pathfinding : MonoBehaviour
                 foreach (Tile n in currentTile.neighbours)
                 {
                     if (n.tileType != Tile.TileType.TileObstacle && 
-                        !ret.Contains(n) &&
-                        GetDistace(n, start) <= range)
+                        !ret.Contains(n))
                     {
 
                         n.distacneFromStart = currentTile.distacneFromStart + 1;
