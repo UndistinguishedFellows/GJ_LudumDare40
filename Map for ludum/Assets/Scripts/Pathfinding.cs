@@ -1,8 +1,10 @@
-﻿#define DEBUG_REACHABLE_TILES
+﻿//#define DEBUG_REACHABLE_TILES
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+using System.Diagnostics;
 
 #if DEBUG_REACHABLE_TILES
 using VisualDebugging;
@@ -28,10 +30,25 @@ public class Pathfinding : MonoBehaviour
 
     void Update()
     {
-        if(showPath)
-            FindPath(seeker.position, target.position);
-        else
-            GetReachableTiles(seeker.position, unitRange);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Stopwatch watch;
+            watch = new Stopwatch();
+            watch.Start();
+
+            if (showPath)
+            {
+                FindPath(seeker.position, target.position);
+                watch.Stop();
+                print("Path found in: " + watch.ElapsedMilliseconds + "ms.");
+            }
+            else
+            {
+                GetReachableTiles(seeker.position, unitRange);
+                watch.Stop();
+                print("Reachables tiles get in: " + watch.ElapsedMilliseconds + "ms.");
+            }
+        }
     }
 
     public void FindPath(Vector3 startPosition, Vector3 targetPosition)
