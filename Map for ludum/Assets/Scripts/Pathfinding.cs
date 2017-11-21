@@ -1,11 +1,23 @@
-﻿using System.Collections;
+﻿#define DEBUG_REACHABLE_TILES
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+#if DEBUG_REACHABLE_TILES
+using VisualDebugging;
+#endif
+
 
 public class Pathfinding : MonoBehaviour
 {
     private Map map;
+
+    //Testing vars
+    public bool showPath = true;
+    public int unitRange;
     private List<Tile> _path;
+    private List<Tile> _reachableTiles;
 
     public Transform seeker, target;
 
@@ -16,7 +28,10 @@ public class Pathfinding : MonoBehaviour
 
     void Update()
     {
-        FindPath(seeker.position, target.position);
+        if(showPath)
+            FindPath(seeker.position, target.position);
+        else
+            GetReachableTiles(seeker.position, unitRange);
     }
 
     public void FindPath(Vector3 startPosition, Vector3 targetPosition)
@@ -70,6 +85,70 @@ public class Pathfinding : MonoBehaviour
         }
     }
 
+    public void GetReachableTiles(Vector3 position, int range)
+    {
+        Tile start = map.TileFromWorldPoint(position);
+
+        if (start == null || start.tileType == Tile.TileType.TileObstacle)
+            return;
+
+        start.distacneFromStart = 0;
+
+#if DEBUG_REACHABLE_TILES
+
+        VisualDebug.Initialize();
+        VisualDebug.BeginFrame("Start position", true);
+        VisualDebug.SetColour(Colours.lightGreen);
+        VisualDebug.DrawCube(start.transform.position, .5f);
+#endif
+
+        List<Tile> openSet = new List<Tile>();
+        List<Tile> ret = new List<Tile>();
+
+        openSet.Add(start);
+        ret.Add(start);
+
+        while(openSet.Count > 0)
+        {
+            Tile currentTile = openSet[0];
+
+            openSet.Remove(currentTile);
+
+            if (currentTile.distacneFromStart < range)
+            {
+                foreach (Tile n in currentTile.neighbours)
+                {
+                    if (n.tileType != Tile.TileType.TileObstacle && 
+                        !ret.Contains(n) &&
+                        GetDistace(n, start) <= range)
+                    {
+
+                        n.distacneFromStart = currentTile.distacneFromStart + 1;
+                        ret.Add(n);
+                        openSet.Add(n);
+#if DEBUG_REACHABLE_TILES
+
+                        VisualDebug.BeginFrame("Getting neighbours", false);
+                        VisualDebug.SetColour(Colours.lightGrey);
+                        string text = string.Format("Distance from start: {0}.", n.distacneFromStart);
+                        VisualDebug.DrawPointWithLabel(n.transform.position, .1f, text);
+
+#endif
+                    }
+                }
+            }
+        }
+
+        if (ret.Count > 0)
+            _reachableTiles = ret;
+
+#if DEBUG_REACHABLE_TILES
+
+        VisualDebug.Save();
+
+#endif
+    }
+
     void RetracePath(Tile start, Tile end)
     {
         List<Tile> path = new List<Tile>();
@@ -102,12 +181,26 @@ public class Pathfinding : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        if (_path != null)
+        if (showPath)
         {
-            foreach (Tile tile in _path)
+            if (_path != null)
             {
-                Gizmos.color = Color.white;
-                Gizmos.DrawCube(tile.transform.position, Vector3.one);
+                foreach (Tile tile in _path)
+                {
+                    Gizmos.color = Color.white;
+                    Gizmos.DrawCube(tile.transform.position, Vector3.one);
+                }
+            }
+        }
+        else
+        {
+            if(_reachableTiles != null)
+            {
+                foreach(Tile tile in _reachableTiles)
+                {
+                    Gizmos.color = Color.grey;
+                    Gizmos.DrawCube(tile.transform.position, Vector3.one);
+                }
             }
         }
     }

@@ -25,6 +25,9 @@ public class Tile : MonoBehaviour {
     public int hCost;
 
     [HideInInspector]
+    public int distacneFromStart = 0;
+
+    [HideInInspector]
     public Tile parent;
 
 
