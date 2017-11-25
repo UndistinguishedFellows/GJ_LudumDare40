@@ -24,10 +24,15 @@ public class Pathfinding : MonoBehaviour {
 
     public bool FindPath(Vector3 startPos, Vector3 targetPos)
     {
-        bool ret = false;
-
         Node start = map.NodeFromWorldPoint(startPos);
         Node end = map.NodeFromWorldPoint(targetPos);
+
+        return FindPath(start, end);
+    }
+
+    public bool FindPath(Node start, Node end)
+    {
+        bool ret = false;
 
         if (start == null || end == null
             || start.tileType == Node.TileType.TileObstacle
@@ -41,10 +46,10 @@ public class Pathfinding : MonoBehaviour {
 
         openSet.Add(start);
 
-        while(openSet.Count > 0)
+        while (openSet.Count > 0)
         {
             Node current = openSet[0];
-            for(int i = 1; i < openSet.Count; ++i)
+            for (int i = 1; i < openSet.Count; ++i)
             {
                 if (openSet[i].FCost < current.FCost || openSet[i].FCost == current.FCost
                     && openSet[i].hCost < current.hCost)
@@ -54,19 +59,19 @@ public class Pathfinding : MonoBehaviour {
             openSet.Remove(current);
             closedSet.Add(current);
 
-            if(current == end)
+            if (current == end)
             {
                 RetracePath(start, end);
                 return true;
             }
 
-            foreach(Node neighbour in current.neighbours)
+            foreach (Node neighbour in current.neighbours)
             {
                 if (neighbour.tileType == Node.TileType.TileObstacle || closedSet.Contains(neighbour))
                     continue;
 
                 int newMoveCostToNeighbour = current.gCost + GetDistance(current, neighbour);
-                if(newMoveCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
+                if (newMoveCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
                 {
                     neighbour.gCost = newMoveCostToNeighbour;
                     neighbour.hCost = GetDistance(neighbour, end);

@@ -210,7 +210,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1474308584}
-  unitRange: 4
+  unitRange: 5
+  unitSpeed: 2
 --- !u!1 &440901905
 GameObject:
   m_ObjectHideFlags: 0
