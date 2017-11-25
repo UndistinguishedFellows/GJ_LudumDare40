@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-public class UnitCalcPathTest : MonoBehaviour {
-
+public class UnitCalcPathTest : MonoBehaviour
+{
+    public GameObject reachablePrefab;
+    public Transform reachableNodesParent;
     public GameObject target;
     [Range(0, 15)]
     public int unitRange = 4;
@@ -15,6 +17,7 @@ public class UnitCalcPathTest : MonoBehaviour {
     private Map map;
     List<Node> path = null;
     List<Node> reachableNodes = null;
+    private List<GameObject> reachableNodesGameObjects = new List<GameObject>();
 
     private Node clickedNode = null;
     private Node nextNode = null;
@@ -28,14 +31,14 @@ public class UnitCalcPathTest : MonoBehaviour {
 
     void Start()
     {
-        reachableNodes = pathfinding.GetReachableNodes(transform.position, unitRange);
+        CalcReachableNodes();
     }
 
 	void Update ()
     {
         if (reachableNodes == null)
         {
-            reachableNodes = pathfinding.GetReachableNodes(transform.position, unitRange);
+            CalcReachableNodes();
         }
 
         if (Input.GetMouseButtonDown(0) && path == null)
@@ -86,7 +89,7 @@ public class UnitCalcPathTest : MonoBehaviour {
                     // Ajust the position, set path to null and recalc reachable nodes.
                     transform.position = nextNode.transform.position;
                     path = null;
-                    reachableNodes = pathfinding.GetReachableNodes(transform.position, unitRange);
+                    CalcReachableNodes();
                     nextNodeIndex = 0;
                 }
                 else
@@ -131,6 +134,31 @@ public class UnitCalcPathTest : MonoBehaviour {
             foreach (Node n in path)
             {
                 Gizmos.DrawCube(n.transform.position, Vector3.one * 0.75f);
+            }
+        }
+    }
+
+    //-----------------------------------------------------------------------------
+
+    void CalcReachableNodes()
+    {
+        var childs = new List<Transform>();
+        foreach (Transform t in reachableNodesParent)
+        {
+            childs.Add(t);
+        }
+        childs.ForEach(child => DestroyImmediate(child.gameObject));
+
+        reachableNodesGameObjects.Clear();
+
+        reachableNodes = pathfinding.GetReachableNodes(transform.position, unitRange);
+
+        if(reachableNodes != null)
+        {
+            foreach (Node node in reachableNodes)
+            {
+                Vector3 pos = node.transform.position + Vector3.forward * -0.01f;
+                reachableNodesGameObjects.Add(Instantiate(reachablePrefab, pos, Quaternion.identity, reachableNodesParent));
             }
         }
     }
