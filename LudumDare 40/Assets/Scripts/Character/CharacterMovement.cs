@@ -8,9 +8,11 @@ public class CharacterMovement : MonoBehaviour
 
     public float speed;
 	public float stoneThrowRange = 15f;
-	public float throwStoneCd = 2f;
 
-	private float timeElapsedSinceLastThrow;
+
+	public float habilitiesCD = 2f;
+
+	private float timeElapsedSinceLastHabiliy;
 
 
     public Image[] skills;
@@ -42,7 +44,7 @@ public class CharacterMovement : MonoBehaviour
 	{
 		ChangeSkillFocus(-1);
 
-		timeElapsedSinceLastThrow = throwStoneCd; // Set to cd in order to be able to throw one on start.
+		timeElapsedSinceLastHabiliy = habilitiesCD; // Set to cd in order to be able to throw one on start.
 
 	}
 	
@@ -96,10 +98,8 @@ public class CharacterMovement : MonoBehaviour
 
 	public void InputMouseAction()
 	{
-		// Update cd's
-		timeElapsedSinceLastThrow += Time.deltaTime;
-
-		//--------
+		// TODO: Some feed on CDs
+		timeElapsedSinceLastHabiliy += Time.deltaTime;
 
 		if (Input.GetKeyDown(KeyCode.Mouse0)) // Left mouse button
 		{
@@ -109,34 +109,32 @@ public class CharacterMovement : MonoBehaviour
 
 		if (Input.GetKeyDown(KeyCode.Mouse1)) // Right mouse button
 		{
-			//Debug.Log("mouse R click at" + Input.mousePosition);
-			ChangeEnergy(-1);
-			switch (skillFocus)
+			if (timeElapsedSinceLastHabiliy >= habilitiesCD)
 			{
-				case 0:
+				ChangeEnergy(-1);
+
+				switch (skillFocus)
+				{
+					case 0:
+						SpawnRock();
+						break;
+
+					case 1:
 					{
-						if (timeElapsedSinceLastThrow >= throwStoneCd)
-						{
-							SpawnRock();
-							timeElapsedSinceLastThrow = 0f;
-						}
+						//TODO: Set / Active
+						SpawnWalkie();
+						break;
 					}
-					break;
 
-				case 1:
-					//TODO: Set / Active
-				{
-					SpawnWalkie();
+					case 2:
+					{
+						Dash();
+						break;
+					}
 				}
-					break;
 
-				case 2:
-				{
-					Dash();
-				}
-					break;
+				timeElapsedSinceLastHabiliy = 0f;
 			}
-
 		}
 
 		if (Input.GetAxis("Mouse ScrollWheel") > 0f)
