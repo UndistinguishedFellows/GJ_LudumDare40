@@ -1,9 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterMovement : MonoBehaviour {
     public float speed;
+    public Image[] skills;
+    public int skillFocus = 0;
+    public Slider energyBar;
+    public int energy;
+    public int energyCost;
+    //--
     public void SetSpeed(float value)
     {
         speed = value;
@@ -14,8 +21,8 @@ public class CharacterMovement : MonoBehaviour {
     }
 	// Use this for initialization
 	void Start () {
-		
-	}
+        ChangeSkillFocus(-1);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -46,20 +53,44 @@ public class CharacterMovement : MonoBehaviour {
     }
     public void InputMouseAction()
     {
-        if (Input.GetKey(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Debug.Log("mouse R click at: " + Input.mousePosition);
         }
-        if (Input.GetKey(KeyCode.Mouse1))
+        if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             Debug.Log("mouse L click at" + Input.mousePosition);
+            ChangeEnergy(-1);
         }
         if(Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
             Debug.Log("Mouse scroll UP");
+            ChangeSkillFocus(1);
         }else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
         {
             Debug.Log("Mouse scroll DOWN");
+            ChangeSkillFocus(-1);
         }
+    }
+    public void SetEnergyCost(int value)
+    {
+        energyCost = value;
+    }
+    public void ChangeSkillFocus(int amount)
+    {
+        skillFocus += amount;
+        skillFocus=Mathf.Clamp(skillFocus,0,skills.Length-1);
+        Debug.Log("skill selected: "+skillFocus);
+        foreach(Image skill in skills)
+        {
+            skill.color = Color.white;
+        }
+        skills[skillFocus].color = Color.blue;
+    }
+    public void ChangeEnergy(int amount)
+    {
+        energy += amount*energyCost;
+        energy = Mathf.Clamp(energy, 0, (int)energyBar.maxValue);
+        energyBar.value = energy;
     }
 }
