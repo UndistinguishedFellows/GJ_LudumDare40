@@ -14,6 +14,8 @@ public class CharacterMovement : MonoBehaviour {
     public GameObject rockGameobject;
     public GameObject skillspawnSkillsTrasnform;
     public GameObject rotationAxis;
+    public GameObject walkie;
+    bool bInDash = false;
     //--
     public void SetSpeed(float value)
     {
@@ -26,7 +28,7 @@ public class CharacterMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         ChangeSkillFocus(-1);
-        DrawLines();
+        
     }
 	
 	// Update is called once per frame
@@ -86,7 +88,18 @@ public class CharacterMovement : MonoBehaviour {
         {
             //Debug.Log("mouse L click at" + Input.mousePosition);
             ChangeEnergy(-1);
-            SpawnRock();
+            if (skillFocus == 0)
+            { 
+                SpawnRock();
+            }
+            if (skillFocus == 1){
+                SpawnWalkie();
+            }
+            if (skillFocus == 2)
+            {
+                Dash();
+            }
+                
         }
         if(Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
@@ -120,51 +133,39 @@ public class CharacterMovement : MonoBehaviour {
         energyBar.value = energy;
     }
 
-    public void SkillRock()
+    public void SpawnWalkie()
     {
+        GameObject walkieobj = (GameObject)Instantiate(walkie, skillspawnSkillsTrasnform.transform.position, Quaternion.identity);
+        Debug.Log(walkieobj.transform.position);
         
     }
-   
-   
-
-    /// <summary>
-    /// outdated
-    /// </summary>
-    [Range(0, 50)]
-    public int segments = 20;
-    [Range(0, 5)]
-    public float xradius = 1;
-    [Range(0, 5)]
-    public float yradius = 1;
-    LineRenderer line;
-
-    public void DrawLines()
+    public void Dash()
     {
-        line = gameObject.GetComponent<LineRenderer>();
-
-        line.SetVertexCount(segments + 1);
-        line.useWorldSpace = false;
-        CreatePoints();
-    }
-
-    void CreatePoints()
-    {
-        float x;
-        float y;
-        float z;
-
-        float angle = 20f;
-
-        for (int i = 0; i < (segments + 1); i++)
+        if (!bInDash)
         {
-            x = Mathf.Sin(Mathf.Deg2Rad * angle) * xradius;
-            y = Mathf.Cos(Mathf.Deg2Rad * angle) * yradius;
-
-            line.SetPosition(i, new Vector3(x, y, 0));
-
-            angle += (360f / segments);
+            StartCoroutine(DashTime());
         }
+        
     }
+
+
+    IEnumerator DashTime()
+    {
+        bInDash = true;
+        float initialSpeed = speed;
+        float time = 0.2f;
+        speed = speed * 3;
+        
+        while (time>0)
+        {
+            Debug.Log(time);
+            time -= Time.deltaTime;
+            yield return null;
+        }
+        speed = initialSpeed;
+        bInDash = false;
+    }
+
 }
 
 
