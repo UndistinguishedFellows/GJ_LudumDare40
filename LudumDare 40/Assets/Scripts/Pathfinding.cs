@@ -32,12 +32,10 @@ public class Pathfinding : MonoBehaviour {
 
     public bool FindPath(Node start, Node end)
     {
-        bool ret = false;
-
         if (start == null || end == null
             || start.tileType == Node.TileType.TileObstacle
             || end.tileType == Node.TileType.TileObstacle)
-            return ret;
+            return false;
 
         lastPath.Clear();
 
@@ -48,6 +46,7 @@ public class Pathfinding : MonoBehaviour {
 
         while (openSet.Count > 0)
         {
+            // - Get the node with lowest cost ----
             Node current = openSet[0];
             for (int i = 1; i < openSet.Count; ++i)
             {
@@ -56,14 +55,22 @@ public class Pathfinding : MonoBehaviour {
                     current = openSet[i];
             }
 
+            // -------------------------------------
+
             openSet.Remove(current);
             closedSet.Add(current);
+
+            // - If is the end, we got the path. ------
 
             if (current == end)
             {
                 RetracePath(start, end);
                 return true;
             }
+
+            // -------------------------------------
+
+            // - Otherwise keep looking on neighbours --------------
 
             foreach (Node neighbour in current.neighbours)
             {
@@ -81,9 +88,11 @@ public class Pathfinding : MonoBehaviour {
                         openSet.Add(neighbour);
                 }
             }
+
+            // ------------------------------------------
         }
 
-        return ret;
+        return false;
     }
 
     public List<Node> GetLastPath()
