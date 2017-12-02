@@ -20,7 +20,7 @@ public class Rock : MonoBehaviour
 	private bool mustEndMovement = false;
 
 	private Rigidbody2D rb;
-    
+
 	//-------------------------------------------------
 
 	void Awake()
@@ -78,7 +78,7 @@ public class Rock : MonoBehaviour
 		Collider2D[] targets = Physics2D.OverlapCircleAll(rb.position, noiseDefaultRadius, noiseDetectorsLayer);
 		foreach (Collider2D target in targets)
 		{
-			target.BroadcastMessage("OnNoise",  target.transform.position); //TODO: 
+			target.BroadcastMessage("OnNoise", target.transform.position); //TODO: 
 		}
 
 
