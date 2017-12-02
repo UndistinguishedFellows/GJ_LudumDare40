@@ -34,6 +34,11 @@ public class Map : MonoBehaviour {
         get { return height; }
     }
 
+    public int MaxSize
+    {
+        get { return width * height; }
+    }
+
     //-------------------------------------
 
     public void OnMapVisualInfoLoaded()

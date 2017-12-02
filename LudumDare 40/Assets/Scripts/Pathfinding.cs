@@ -39,7 +39,7 @@ public class Pathfinding : MonoBehaviour {
 
         lastPath.Clear();
 
-        List<Node> openSet = new List<Node>();
+        Heap<Node> openSet = new Heap<Node>(map.MaxSize);
         HashSet<Node> closedSet = new HashSet<Node>();
 
         openSet.Add(start);
@@ -47,18 +47,10 @@ public class Pathfinding : MonoBehaviour {
         while (openSet.Count > 0)
         {
             // - Get the node with lowest cost ----
-            Node current = openSet[0];
-            for (int i = 1; i < openSet.Count; ++i)
-            {
-                if (openSet[i].FCost < current.FCost || openSet[i].FCost == current.FCost
-                    && openSet[i].hCost < current.hCost)
-                    current = openSet[i];
-            }
+            Node current = openSet.RemoveFirst();
+            closedSet.Add(current);
 
             // -------------------------------------
-
-            openSet.Remove(current);
-            closedSet.Add(current);
 
             // - If is the end, we got the path. ------
 
@@ -86,6 +78,8 @@ public class Pathfinding : MonoBehaviour {
 
                     if (!openSet.Contains(neighbour))
                         openSet.Add(neighbour);
+                    else
+                        openSet.UpdateItem(neighbour);
                 }
             }
 

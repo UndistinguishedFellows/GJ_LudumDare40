@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Node : MonoBehaviour {
+public class Node : MonoBehaviour, IHeapItem<Node> {
 
     public enum TileType
     {
@@ -30,6 +30,8 @@ public class Node : MonoBehaviour {
 
     [HideInInspector]
     public Node[] neighbours = new Node[4]; // 0:Top, 1:Right, 2:Bottom, 3:Left
+
+    private int heapIndex;
 
     //-------------------------------------
 
@@ -59,4 +61,22 @@ public class Node : MonoBehaviour {
         gridPosY = gridY;
     }
 
+    //--------------------------------------
+
+    public int HeapIndex
+    {
+        get { return heapIndex; }
+        set { heapIndex = value; }
+    }
+
+    public int CompareTo(Node nodeToCompare)
+    {
+        int compare = FCost.CompareTo(nodeToCompare.FCost);
+        if (compare == 0)
+        {
+            compare = hCost.CompareTo(nodeToCompare.hCost);
+        }
+
+        return -compare;
+    }
 }

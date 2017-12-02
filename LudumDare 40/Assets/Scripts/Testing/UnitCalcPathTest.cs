@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using System.Diagnostics;
 
 public class UnitCalcPathTest : MonoBehaviour
 {
@@ -50,27 +51,34 @@ public class UnitCalcPathTest : MonoBehaviour
             {
                 if (clickedNode.tileType == Node.TileType.TileObstacle)
                 {
-                    Debug.Log("Clicked on an obstacle node!");
+                    UnityEngine.Debug.Log("Clicked on an obstacle node!");
+                    //TODO: UI
                 }
                 else
                 {
                     if (reachableNodes.Contains(clickedNode))
                     {
+                        Stopwatch sw = new Stopwatch();
+                        sw.Start();
                         if (pathfinding.FindPath(transform.position, mousePos))
                         {
                             path = pathfinding.GetLastPath();
                             nextNode = path[0];
                         }
+                        sw.Stop();
+                        UnityEngine.Debug.Log("Find path lasted: " + sw.ElapsedMilliseconds + "ms.");
                     }
                     else
                     {
-                        Debug.Log("Clicked on a node out of range.");
+                        UnityEngine.Debug.Log("Clicked on a node out of range.");
+                        //TODO: UI
                     }
                 }
             }
             else
             {
-                Debug.Log("Clicked out of map.");
+                UnityEngine.Debug.Log("Clicked out of map.");
+                //TODO: UI
             }
         }
 
@@ -142,6 +150,9 @@ public class UnitCalcPathTest : MonoBehaviour
 
     void CalcReachableNodes()
     {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
         var childs = new List<Transform>();
         foreach (Transform t in reachableNodesParent)
         {
@@ -161,5 +172,8 @@ public class UnitCalcPathTest : MonoBehaviour
                 reachableNodesGameObjects.Add(Instantiate(reachablePrefab, pos, Quaternion.identity, reachableNodesParent));
             }
         }
+
+        sw.Stop();
+        UnityEngine.Debug.Log("Calc get reachable nodes lasted: " + sw.ElapsedMilliseconds + "ms.");
     }
 }
