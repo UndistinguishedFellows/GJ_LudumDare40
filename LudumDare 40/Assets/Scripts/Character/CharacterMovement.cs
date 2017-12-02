@@ -10,6 +10,10 @@ public class CharacterMovement : MonoBehaviour {
     public Slider energyBar;
     public int energy;
     public int energyCost;
+
+    public GameObject rockGameobject;
+    public GameObject skillspawnSkillsTrasnform;
+    public GameObject rotationAxis;
     //--
     public void SetSpeed(float value)
     {
@@ -29,7 +33,26 @@ public class CharacterMovement : MonoBehaviour {
 	void Update () {
         InputMovement();
         InputMouseAction();
+        SpawnerRotateMouse();
+
 	}
+    void SpawnerRotateMouse()
+    {
+        Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - rotationAxis.transform.position;
+        difference.Normalize();
+        float rotation_z = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+        rotationAxis.transform.rotation = Quaternion.Euler(0f, 0f, rotation_z-90);
+    }
+
+    void SpawnRock()
+    {
+        GameObject rock = (GameObject)Instantiate(rockGameobject, skillspawnSkillsTrasnform.transform.position, Quaternion.identity);
+        Debug.Log(rock.transform.position);
+        rock.GetComponent<rock>().GoToPoint(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+    }
+
+
+
 
     public void InputMovement()
     {
@@ -57,11 +80,13 @@ public class CharacterMovement : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Debug.Log("mouse R click at: " + Input.mousePosition);
+            
         }
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
             Debug.Log("mouse L click at" + Input.mousePosition);
             ChangeEnergy(-1);
+            SpawnRock();
         }
         if(Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
@@ -95,11 +120,16 @@ public class CharacterMovement : MonoBehaviour {
         energyBar.value = energy;
     }
 
+    public void SkillRock()
+    {
+        
+    }
+   
+   
 
-
-
-
-
+    /// <summary>
+    /// outdated
+    /// </summary>
     [Range(0, 50)]
     public int segments = 20;
     [Range(0, 5)]
