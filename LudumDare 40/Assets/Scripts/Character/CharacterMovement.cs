@@ -22,6 +22,7 @@ public class CharacterMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         ChangeSkillFocus(-1);
+        DrawLines();
     }
 	
 	// Update is called once per frame
@@ -93,4 +94,50 @@ public class CharacterMovement : MonoBehaviour {
         energy = Mathf.Clamp(energy, 0, (int)energyBar.maxValue);
         energyBar.value = energy;
     }
+
+
+
+
+
+
+    [Range(0, 50)]
+    public int segments = 20;
+    [Range(0, 5)]
+    public float xradius = 1;
+    [Range(0, 5)]
+    public float yradius = 1;
+    LineRenderer line;
+
+    public void DrawLines()
+    {
+        line = gameObject.GetComponent<LineRenderer>();
+
+        line.SetVertexCount(segments + 1);
+        line.useWorldSpace = false;
+        CreatePoints();
+    }
+
+    void CreatePoints()
+    {
+        float x;
+        float y;
+        float z;
+
+        float angle = 20f;
+
+        for (int i = 0; i < (segments + 1); i++)
+        {
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * xradius;
+            y = Mathf.Cos(Mathf.Deg2Rad * angle) * yradius;
+
+            line.SetPosition(i, new Vector3(x, y, 0));
+
+            angle += (360f / segments);
+        }
+    }
 }
+
+
+
+
+
