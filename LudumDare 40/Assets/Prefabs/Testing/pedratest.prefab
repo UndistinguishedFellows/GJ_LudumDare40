@@ -39,7 +39,7 @@ GameObject:
   - component: {fileID: 212789226379283962}
   - component: {fileID: 58173404714625836}
   - component: {fileID: 50969913368017494}
-  - component: {fileID: 114375551384568804}
+  - component: {fileID: 114952062236547008}
   m_Layer: 0
   m_Name: pedratest
   m_TagString: Untagged
@@ -126,7 +126,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114375551384568804
+--- !u!114 &114952062236547008
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -141,7 +141,7 @@ MonoBehaviour:
   noiseDefaultRadius: 2
   noiseDetectorsLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   area: {fileID: 1412702500839692}
 --- !u!212 &212653854234068868
 SpriteRenderer:

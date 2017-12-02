@@ -52,7 +52,6 @@ public class Rock : MonoBehaviour
 
 	IEnumerator MoveRock()
 	{
-		//Debug.Log("Movement corutine started.");
 		while (Vector3.Distance(transform.position, destination) >= 0.1 && !mustEndMovement) //Let a bit of threshold
 		{
 			rb.position += velocity * Time.deltaTime;
