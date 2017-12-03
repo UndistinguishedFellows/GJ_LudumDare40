@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 50969913368017494}
   - component: {fileID: 114779377235358244}
   m_Layer: 0
-  m_Name: pedratest
+  m_Name: ThrowRock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

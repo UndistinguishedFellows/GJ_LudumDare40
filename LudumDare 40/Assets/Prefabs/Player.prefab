@@ -19,6 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4252264582625012}
+  - component: {fileID: 212164768441922922}
   m_Layer: 0
   m_Name: Visuals
   m_TagString: Untagged
@@ -64,6 +65,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4386967447100040}
+  - component: {fileID: 50397628455360816}
+  - component: {fileID: 61999534507489588}
+  - component: {fileID: 58765368542129206}
   - component: {fileID: 114764110918452792}
   m_Layer: 0
   m_Name: Player
@@ -127,6 +131,66 @@ Transform:
   m_Father: {fileID: 4393514678175976}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50397628455360816
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1645789509056208}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &58765368542129206
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1645789509056208}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.44
+--- !u!61 &61999534507489588
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1645789509056208}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!114 &114764110918452792
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -143,17 +207,66 @@ MonoBehaviour:
   crouchNoiseDevider: 2
   initialEnergy: 10
   initialHabilityEnergyCost: 1
-  interactionRange: 5
-  initialNoiseRadius: 10
-  stoneThrowRange: 15
+  interactionRange: 1.5
+  initialNoiseRadius: 3.5
+  stoneThrowRange: 7
   interactionDuration: 2
   habilitiesCD: 2
-  skillsImages: []
+  skillsImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   energyBarSlider: {fileID: 0}
-  rockPrefab: {fileID: 0}
-  walkiePrefab: {fileID: 0}
-  rotationAxis: {fileID: 0}
-  skillspawnSkillsTrasnform: {fileID: 0}
+  rockPrefab: {fileID: 1724732179591782, guid: 9223f357b91efb54f8da27e747e1d731, type: 2}
+  walkiePrefab: {fileID: 1359857533519916, guid: 2614ec6bf9c59ee41914ea1597efc593,
+    type: 2}
+  rotationAxis: {fileID: 1349125003516126}
+  skillspawnSkillsTrasnform: {fileID: 1304128119368580}
   noiseDetectorsLayer:
     serializedVersion: 2
     m_Bits: 256
+  interactionNoiseMultiplier: 0.5
+--- !u!212 &212164768441922922
+SpriteRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1114347544786746}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 61f9302f88a8fb34abd347bfc7ddec90, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 4, y: 4}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0

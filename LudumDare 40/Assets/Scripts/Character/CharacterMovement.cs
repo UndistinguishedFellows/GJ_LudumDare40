@@ -49,6 +49,8 @@ public class CharacterMovement : MonoBehaviour
 	private bool bInDash = false;
 	private int skillFocus = 0;
 
+	public float interactionNoiseMultiplier = 0.5f;
+
 	private GameManager gm;
 
 	public enum Directions
@@ -174,7 +176,7 @@ public class CharacterMovement : MonoBehaviour
 		else
 		{
 			// if player is interacting, generate noise the half radius of the run radius.
-			Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, noiseRadius / 2, noiseDetectorsLayer);
+			Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, noiseRadius * interactionNoiseMultiplier, noiseDetectorsLayer);
 			foreach (Collider2D col in cols)
 			{
 				col.BroadcastMessage("OnNoise", transform.position); //TODO: 
@@ -364,13 +366,11 @@ public class CharacterMovement : MonoBehaviour
 	public void ItemReached(PickItem item)
 	{
 		reachableItems.Add(item);
-		Debug.Log("Item reached.");
 	}
 
 	public void ItemLost(PickItem item)
 	{
 		reachableItems.Remove(item);
-		Debug.Log("Item lost.");
 	}
 
 	//------------------------------------

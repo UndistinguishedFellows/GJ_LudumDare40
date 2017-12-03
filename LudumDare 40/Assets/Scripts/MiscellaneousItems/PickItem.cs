@@ -49,7 +49,7 @@ public class PickItem : MonoBehaviour
     public void Pick()
     {
         // 1. Disable the item and alert mark.
-        gameObject.SetActive(false);
+        gameObject.SetActive(false); // TODO: Destroy
         alertMark.SetActive(false);
 
         // 2. Enable the UI icon.

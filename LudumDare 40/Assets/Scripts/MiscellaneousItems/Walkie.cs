@@ -13,7 +13,7 @@ public class Walkie : MonoBehaviour
 
 	public GameObject noiseMark;
 
-	private bool useAudioClipDurationAsNoiseDuration = true;
+	public bool useAudioClipDurationAsNoiseDuration = true;
 
 	private bool isOn = false;
 

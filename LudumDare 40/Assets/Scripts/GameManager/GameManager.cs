@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     {
 	    if (gameOver)
 	    {
+		    playerController.enabled = false;
 		    Debug.Log("GameOver");
 	    }
 	}
