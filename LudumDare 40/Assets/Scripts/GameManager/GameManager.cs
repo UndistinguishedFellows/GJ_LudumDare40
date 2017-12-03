@@ -7,19 +7,17 @@ public class GameManager : MonoBehaviour
     public int maxItemsToPick = 3;
     private int itemsPicked = 0;
 
-    public float playerDefaultSpeed = 2f;
-    public float speedToReduce = 1f;
-    private float playerSpeed;
+	public int[] energyCostIncrements;
+	public float[] speedIncrements;
+	public float[] noiseRadiusIncrements;
 
-    public float playerDefaultNoise = 1f;
-    public float noiseToIncrease = 1f;
-    private float playerNoise;
+	
+	private CharacterMovement playerController;
 
     //-------------------------------------------
     void Awake ()
     {
-        playerSpeed = playerDefaultSpeed; //Can change this to get the speed from the player.
-        playerNoise = playerDefaultNoise;
+	    playerController = FindObjectOfType<CharacterMovement>();
     }
 	
 
@@ -30,34 +28,24 @@ public class GameManager : MonoBehaviour
 
     //-------------------------------------------
 
-    public float PlayerNoise
-    {
-        get { return playerNoise; }
-    }
-
-    public float PlayerSpeed
-    {
-        get { return playerSpeed; }
-    }
+    
 
     //-------------------------------------------
 
     public void ItemCollected()
     {
-        // TODO: Modify UI to show stars??
-        itemsPicked++;
+	    if (itemsPicked >= maxItemsToPick)
+	    {
+			// Should never get here but just in case.
+		    return;
+	    }
 
+	    playerController.Speed = playerController.Speed + speedIncrements[itemsPicked];
+	    playerController.HabEnergyCost = playerController.HabEnergyCost + energyCostIncrements[itemsPicked];
+	    playerController.NoiseRadius = playerController.NoiseRadius + noiseRadiusIncrements[itemsPicked];
 		
-
-        if (itemsPicked > maxItemsToPick)
-        {
-            Debug.LogError("Picked more items than max items to pick.");
-        }
-        
-        playerNoise += noiseToIncrease;
-        playerSpeed -= speedToReduce;
-
-        // TODO: Set player's speed and noisiness
-
+		// TODO: Modify UI to show stars??
+		itemsPicked++;
+		
     }
 }
