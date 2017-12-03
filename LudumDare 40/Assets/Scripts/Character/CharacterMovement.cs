@@ -234,29 +234,36 @@ public class CharacterMovement : MonoBehaviour
 		{
 			if (timeElapsedSinceLastHabiliy >= habilitiesCD)
 			{
-				ChangeEnergy(-1);
-
-				switch (skillFocus)
+				if (energyAvailable >= habilityEnergyCost)
 				{
-					case 0:
-						SpawnRock();
-						break;
+					ChangeEnergy(-1);
 
-					case 1:
+					switch (skillFocus)
 					{
-						if(locatedWalkie == null)
-							SpawnWalkie();
-						else
-							if(!locatedWalkie.IsReproducing) locatedWalkie.Activate();
+						case 0:
+							SpawnRock();
+							break;
 
-						break;
-					}
+						case 1:
+						{
+							if (locatedWalkie == null)
+								SpawnWalkie();
+							else if (!locatedWalkie.IsReproducing) locatedWalkie.Activate();
 
-					case 2:
-					{
-						Dash();
-						break;
+							break;
+						}
+
+						case 2:
+						{
+							Dash();
+							break;
+						}
 					}
+				}
+				else
+				{
+					//TODO: Reproduce error noise
+
 				}
 
 				timeElapsedSinceLastHabiliy = 0f;
