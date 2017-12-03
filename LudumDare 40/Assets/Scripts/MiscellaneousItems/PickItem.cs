@@ -48,21 +48,16 @@ public class PickItem : MonoBehaviour
 
     public void Pick()
     {
-        // 1. Disable the item and alert mark.
-        gameObject.SetActive(false); // TODO: Destroy
+	    AudioSource aS = GetComponent<AudioSource>();
+	    aS.Play();
+		
         alertMark.SetActive(false);
-
-        // 2. Enable the UI icon.
+		
         icon.gameObject.SetActive(true);
-
-        // 3. Notify the manager.
+		
         gm.ItemCollected();
 
-		// 4. Notify the player.
-	    player.BroadcastMessage("ItemLost", this);
-
-	    AudioSource aS = GetComponent<AudioSource>();
-		aS.Play();
+	    
 		Destroy(gameObject, aS.clip.length);
     }
 

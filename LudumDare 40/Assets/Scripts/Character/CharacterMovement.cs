@@ -200,12 +200,14 @@ public class CharacterMovement : MonoBehaviour
 		{
 			// Begin the interaction
 			isInteracting = true;
+			interactAudioSource.Play();
 		}
 		else if(Input.GetKey(KeyCode.Mouse0))
 		{
 			// Keep interaction
 			if (interactionCounter >= interactionDuration)
 			{
+				interactAudioSource.Stop();
 				isInteracting = false;
 				interactionCounter = 0f;
 
@@ -213,6 +215,7 @@ public class CharacterMovement : MonoBehaviour
 				{
 					item.Pick();
 				}
+				reachableItems.Clear();
 			}
 			else
 			{
@@ -224,6 +227,7 @@ public class CharacterMovement : MonoBehaviour
 			// Stop interaction
 			isInteracting = false;
 			interactionCounter = 0f;
+			interactAudioSource.Stop();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Mouse1)) // Right mouse button
