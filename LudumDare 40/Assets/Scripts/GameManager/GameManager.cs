@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
 		    return;
 	    }
 
-	    playerController.Speed = playerController.Speed + speedIncrements[itemsPicked];
+	    playerController.Speed = playerController.Speed - speedIncrements[itemsPicked];
 	    playerController.HabEnergyCost = playerController.HabEnergyCost + energyCostIncrements[itemsPicked];
 	    playerController.NoiseRadius = playerController.NoiseRadius + noiseRadiusIncrements[itemsPicked];
 		

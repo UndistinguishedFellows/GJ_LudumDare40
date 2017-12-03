@@ -13,7 +13,8 @@ public class PickItem : MonoBehaviour
     void Awake()
     {
         gm = FindObjectOfType<GameManager>();
-        player = FindObjectOfType<CharacterMovement>(); // TODO: Adapt to player controller class
+		if(gm == null)  Debug.LogAssertion("Could not get game manager.");
+        player = FindObjectOfType<CharacterMovement>();
     }
 
     void OnTriggerEnter2D(Collider2D other)

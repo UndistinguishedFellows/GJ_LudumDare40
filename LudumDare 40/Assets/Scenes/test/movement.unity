@@ -200,7 +200,7 @@ Transform:
   m_Children:
   - {fileID: 592342344}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!60 &26550290
 PolygonCollider2D:
@@ -440,7 +440,7 @@ RectTransform:
   - {fileID: 1131950973}
   - {fileID: 898810322}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -484,7 +484,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4572526656470184, guid: 2614ec6bf9c59ee41914ea1597efc593, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2614ec6bf9c59ee41914ea1597efc593, type: 2}
@@ -526,7 +526,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4835591951354162, guid: 9223f357b91efb54f8da27e747e1d731, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114375551384568804, guid: 9223f357b91efb54f8da27e747e1d731, type: 2}
@@ -994,7 +994,7 @@ Transform:
   - {fileID: 1274336329}
   - {fileID: 1177148301}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &837813385
 MonoBehaviour:
@@ -1015,15 +1015,15 @@ MonoBehaviour:
   interactionRange: 2.5
   initialNoiseRadius: 6
   stoneThrowRange: 5
+  interactionDuration: 2
   habilitiesCD: 2
   skills:
   - {fileID: 2075427311}
   - {fileID: 1083588392}
   - {fileID: 1875614963}
   energyBar: {fileID: 563106950}
-  rockGameobject: {fileID: 1724732179591782, guid: 9223f357b91efb54f8da27e747e1d731,
-    type: 2}
-  walkie: {fileID: 1359857533519916, guid: 2614ec6bf9c59ee41914ea1597efc593, type: 2}
+  rockPrefab: {fileID: 0}
+  walkiePrefab: {fileID: 0}
   rotationAxis: {fileID: 581920461}
   skillspawnSkillsTrasnform: {fileID: 625814748}
   noiseDetectorsLayer:
@@ -1319,7 +1319,58 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1095366247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1095366249}
+  - component: {fileID: 1095366248}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: GameController
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1095366248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1095366247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 194e2b200b42b924ea767f46e191a931, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxItemsToPick: 3
+  energyCostIncrements: 010000000200000003000000
+  speedIncrements:
+  - 1
+  - 2
+  - 3
+  noiseRadiusIncrements:
+  - 2
+  - 3
+  - 4
+  gameOver: 0
+--- !u!4 &1095366249
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1095366247}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1131950972
 GameObject:
@@ -1713,7 +1764,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1781354655
 GameObject:
@@ -1812,7 +1863,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1875614961
 GameObject:
@@ -2047,7 +2098,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2075427309
 GameObject:

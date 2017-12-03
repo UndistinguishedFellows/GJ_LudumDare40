@@ -31,14 +31,15 @@ public class CharacterMovement : MonoBehaviour
 	public float habilitiesCD = 2f;
 
 	private float timeElapsedSinceLastHabiliy;
+	
+	private Walkie locatedWalkie = null;
 
-
-    public Image[] skills;
-    public Slider energyBar;
+    public Image[] skillsImages;
+    public Slider energyBarSlider;
 	
 
-    public GameObject rockGameobject;
-	public GameObject walkie;
+    public GameObject rockPrefab;
+	public GameObject walkiePrefab;
 
 	public GameObject rotationAxis;
 	public GameObject skillspawnSkillsTrasnform;
@@ -231,8 +232,11 @@ public class CharacterMovement : MonoBehaviour
 
 					case 1:
 					{
-						//TODO: Set / Active
-						SpawnWalkie();
+						if(locatedWalkie == null)
+							SpawnWalkie();
+						else
+							if(!locatedWalkie.IsReproducing) locatedWalkie.Activate();
+
 						break;
 					}
 
@@ -306,15 +310,14 @@ public class CharacterMovement : MonoBehaviour
 		    worldMousePoint = transform.position + dir;
 	    }
 
-		GameObject rock = (GameObject)Instantiate(rockGameobject, skillspawnSkillsTrasnform.transform.position, Quaternion.identity);
+		GameObject rock = (GameObject)Instantiate(rockPrefab, skillspawnSkillsTrasnform.transform.position, Quaternion.identity);
         rock.GetComponent<Rock>().GoToPoint(worldMousePoint, stoneThrowRange);
     }
 
 	public void SpawnWalkie()
 	{
-		GameObject walkieobj = (GameObject)Instantiate(walkie, skillspawnSkillsTrasnform.transform.position, Quaternion.identity);
-		Debug.Log(walkieobj.transform.position);
-
+		GameObject walkieobj = (GameObject)Instantiate(walkiePrefab, skillspawnSkillsTrasnform.transform.position, Quaternion.identity);
+		locatedWalkie = walkieobj.GetComponent<Walkie>();
 	}
 
 	public void Dash()
@@ -334,13 +337,13 @@ public class CharacterMovement : MonoBehaviour
 	public void ChangeSkillFocus(int amount)
     {
         skillFocus += amount;
-        skillFocus = Mathf.Clamp(skillFocus, 0, skills.Length - 1);
+        skillFocus = Mathf.Clamp(skillFocus, 0, skillsImages.Length - 1);
         
-        foreach(Image skill in skills)
+        foreach(Image skill in skillsImages)
         {
             skill.color = Color.white;
         }
-        skills[skillFocus].color = Color.blue;
+        skillsImages[skillFocus].color = Color.blue;
     }
 
 	public void SetEnergyCost(int value)
@@ -351,8 +354,8 @@ public class CharacterMovement : MonoBehaviour
 	public void ChangeEnergy(int amount)
     {
         energyAvailable += amount * habilityEnergyCost;
-        energyAvailable = Mathf.Clamp(energyAvailable, 0, (int)energyBar.maxValue);
-        energyBar.value = energyAvailable;
+        energyAvailable = Mathf.Clamp(energyAvailable, 0, (int)energyBarSlider.maxValue);
+        energyBarSlider.value = energyAvailable;
     }
 
 
