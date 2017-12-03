@@ -3,25 +3,27 @@ using System.Collections.Generic;
 using BBUnity;
 using UnityEngine;
 
-	public class Guard : MonoBehaviour
-	{
-		//[HideInInspector]
-		public bool inRoute;
+public class Guard : MonoBehaviour
+{
+	//[HideInInspector]
+	public bool inRoute;
 
-		public float visionAngle = 60;
-		public float visionDistance = 10;
-		public float pursueDistance = 15;
+	public float visionAngle = 60;
+	public float visionDistance = 10;
+	public float pursueDistance = 15;
 
-		public Vector3 suspiciousSpot;
-		public bool search = false;
+	public Vector3 suspiciousSpot;
+	public bool search = false;
 
-		private BehaviorExecutor executor = null;
+	//------------------------------------
 
-		void Start()
+	private BehaviorExecutor executor = null;
+
+	void Start()
 		{
 			executor = GetComponent<BehaviorExecutor>();
 		}
-		void Update()
+	void Update()
 		{
 			//This is a fucking shit but idk how to acces to the blackboard...
 			List<string> names = executor.blackboard.intParamsNames;
@@ -38,7 +40,7 @@ using UnityEngine;
 				Debug.Log("GameOver");
 		}
 
-		void OnDrawGizmos()
+	void OnDrawGizmos()
 		{
 			Gizmos.color = Color.red;
 			Gizmos.DrawWireSphere(transform.position, visionDistance);
@@ -59,5 +61,14 @@ using UnityEngine;
 			Gizmos.DrawLine(transform.position, transform.position + dir * pursueDistance);
 			
 		}
+
+	//------------------------------------
+
+	public void OnNoise(Vector3 pos)
+	{
+		search = true;
+		suspiciousSpot = pos;
 	}
 
+	//------------------------------------
+}
