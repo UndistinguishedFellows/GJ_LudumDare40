@@ -101,7 +101,7 @@ MonoBehaviour:
     id=\"40\" />\r\n          <ActionNode id=\"42\" />\r\n          <ConditionEvalNode
     id=\"43\" />\r\n          <ActionNode id=\"44\" />\r\n          <ActionNode id=\"50\"
     />\r\n          <ConditionEvalNode id=\"55\" />\r\n        </nodes>\r\n      </_nodes>\r\n
-    \     <_selectedNode>\r\n        <ConditionEvalNode id=\"43\" />\r\n      </_selectedNode>\r\n
+    \     <_selectedNode>\r\n        <SequenceNode id=\"39\" />\r\n      </_selectedNode>\r\n
     \   </BehaviorTree>\r\n    <RepeatDecorator id=\"1\">\r\n      <_data>\r\n        <data
     selected=\"False\" position=\"1505.871 36.88926\" name=\"Repeat\" description=\"Repeats
     the execution of its child node\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
@@ -113,7 +113,7 @@ MonoBehaviour:
     \         <BehaviorTree id=\"0\" />\r\n          <PrioritySelectorNode id=\"40\"
     />\r\n          <RepeatDecorator id=\"1\" />\r\n        </data>\r\n      </_data>\r\n
     \   </PrioritySelectorNode>\r\n    <ConditionEvalNode id=\"43\">\r\n      <_data>\r\n
-    \       <data selected=\"True\" position=\"0 0\" name=\"Perception/IsTargetCloseAndInSight\"
+    \       <data selected=\"False\" position=\"0 0\" name=\"Perception/IsTargetCloseAndInSight\"
     description=\"Checks whether a target is close and in sight depending on a given
     distance and an angle\" cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"43\" />\r\n          <PrioritySelectorNode
@@ -128,8 +128,8 @@ MonoBehaviour:
     that always returns true.\" cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"41\" />\r\n          <PrioritySelectorNode
     id=\"40\" />\r\n        </data>\r\n      </_data>\r\n    </ConditionEvalNode>\r\n
-    \   <SequenceNode id=\"39\">\r\n      <_data>\r\n        <data selected=\"False\"
-    position=\"1922.274 589.6307\" name=\"Sequence\" description=\"Executes all its
+    \   <SequenceNode id=\"39\">\r\n      <_data>\r\n        <data selected=\"True\"
+    position=\"1836.104 593.886\" name=\"Sequence\" description=\"Executes all its
     children in sequence until all of them are successful\" cardinality=\"-1\" hasParent=\"True\">\r\n
     \         <BehaviorTree id=\"0\" />\r\n          <SequenceNode id=\"39\" />\r\n
     \         <ConditionEvalNode id=\"41\" />\r\n        </data>\r\n      </_data>\r\n

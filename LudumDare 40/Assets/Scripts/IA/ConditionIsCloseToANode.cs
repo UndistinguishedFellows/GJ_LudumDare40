@@ -27,6 +27,7 @@ public class ConditionIsCloseToANode : GOCondition
 											navAgent.transform.position);
 		if (distance < closeDistance)
 		{
+			Debug.Log("Node close");
 			return false;
 		}
 
