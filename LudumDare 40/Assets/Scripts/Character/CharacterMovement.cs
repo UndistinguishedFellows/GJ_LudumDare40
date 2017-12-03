@@ -8,6 +8,10 @@ public class CharacterMovement : MonoBehaviour
 
     public float initialSpeed = 5f;
 	private float speed;
+	public float crouchSpeedDevider = 2f;
+	public float crouchNoiseDevider = 2f;
+
+	private bool isCrouch = false;
 
 	public int initialEnergy = 10;
 	private int energyAvailable;
@@ -19,7 +23,10 @@ public class CharacterMovement : MonoBehaviour
 	public float initialNoiseRadius = 10f;
 	private float noiseRadius;
 	public float stoneThrowRange = 15f;
-	
+
+	public float interactionDuration = 2f;
+	private float interactionCounter = 0f;
+	private bool isInteracting = false;
 	
 	public float habilitiesCD = 2f;
 
@@ -35,8 +42,10 @@ public class CharacterMovement : MonoBehaviour
 
 	public GameObject rotationAxis;
 	public GameObject skillspawnSkillsTrasnform;
+	
+	public LayerMask noiseDetectorsLayer;
 
-    private bool bInDash = false;
+	private bool bInDash = false;
 	private int skillFocus = 0;
 
 	private GameManager gm;
@@ -50,6 +59,8 @@ public class CharacterMovement : MonoBehaviour
 	}
 
 	private Directions currentDirection = Directions.DIR_UP;
+
+	private List<PickItem> reachableItems;
 
 	//------------------------------------
 
@@ -68,6 +79,11 @@ public class CharacterMovement : MonoBehaviour
 		energyAvailable = initialEnergy;
 		habilityEnergyCost = initialHabilityEnergyCost;
 		noiseRadius = initialNoiseRadius;
+
+		reachableItems = new List<PickItem>();
+
+		CircleCollider2D col = GetComponent<CircleCollider2D>();
+		if (col != null) col.radius = interactionRange;
 	}
 	
 	void Update()
@@ -75,7 +91,6 @@ public class CharacterMovement : MonoBehaviour
 		InputMovement();
 		InputMouseAction();
 		Rotation();
-
 	}
 
 	void OnDrawGizmos()
@@ -86,9 +101,10 @@ public class CharacterMovement : MonoBehaviour
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position, interactionRange);
 
-		Gizmos.color = Color.yellow;
+		Gizmos.color = Color.black;
 		Gizmos.DrawWireSphere(transform.position, initialNoiseRadius);
-		Gizmos.DrawWireSphere(transform.position, noiseRadius);
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireSphere(transform.position, isCrouch ? noiseRadius / crouchNoiseDevider : noiseRadius);
 	}
 
 	//------------------------------------
@@ -115,35 +131,90 @@ public class CharacterMovement : MonoBehaviour
 
 	public void InputMovement()
 	{
-		Vector3 vel = Vector3.zero;
-
-		vel.x = Input.GetAxisRaw("Horizontal");
-		vel.y = Input.GetAxisRaw("Vertical");
-
-		vel.Normalize();
-		vel.z = 0;
-		vel *= (speed * Time.deltaTime);
-
-		// TODO: Crouch??
-
-		if (vel != Vector3.zero)
+		if (!isInteracting)
 		{
+			Vector3 vel = Vector3.zero;
 
-			transform.position += vel;
-			// TODO: Generate noise
+			vel.x = Input.GetAxisRaw("Horizontal");
+			vel.y = Input.GetAxisRaw("Vertical");
+
+			vel.Normalize();
+			vel.z = 0;
+
+			float sp = speed;
+			float nRad = noiseRadius;
+
+			if (Input.GetKey(KeyCode.LeftControl))
+				isCrouch = true;
+			else if (isCrouch)
+				isCrouch = false;
+
+			if (isCrouch)
+			{
+				sp /= crouchSpeedDevider;
+				nRad /= crouchNoiseDevider;
+			}
+
+			vel *= (sp * Time.deltaTime);
+
+			if (vel != Vector3.zero)
+			{
+
+				transform.position += vel;
+
+				// Generate noise
+				Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, nRad, noiseDetectorsLayer);
+				foreach (Collider2D col in cols)
+				{
+					col.BroadcastMessage("OnNoise", transform.position); //TODO: 
+				}
+			}
+		}
+		else
+		{
+			// if player is interacting, generate noise the half radius of the run radius.
+			Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, noiseRadius / 2, noiseDetectorsLayer);
+			foreach (Collider2D col in cols)
+			{
+				col.BroadcastMessage("OnNoise", transform.position); //TODO: 
+			}
 		}
 	}
 
 	public void InputMouseAction()
 	{
-		// TODO: Interrumpt any action
+		// TODO: Interrumpt any hability??
 		// TODO: Some feed on CDs
 		timeElapsedSinceLastHabiliy += Time.deltaTime;
 
 		if (Input.GetKeyDown(KeyCode.Mouse0)) // Left mouse button
 		{
-			//Debug.Log("mouse L click at: " + Input.mousePosition);
+			// Begin the interaction
+			isInteracting = true;
+		}
+		else if(Input.GetKey(KeyCode.Mouse0))
+		{
+			// Keep interaction
+			if (interactionCounter >= interactionDuration)
+			{
+				isInteracting = false;
+				interactionCounter = 0f;
 
+				foreach (PickItem item in reachableItems)
+				{
+					item.Pick();
+				}
+			}
+			else
+			{
+				interactionCounter += Time.deltaTime;
+			}
+		}
+		else if (Input.GetKeyUp(KeyCode.Mouse0))
+		{
+			// Stop interaction
+			isInteracting = false;
+			interactionCounter = 0f;
 		}
 
 		if (Input.GetKeyDown(KeyCode.Mouse1)) // Right mouse button
@@ -284,6 +355,20 @@ public class CharacterMovement : MonoBehaviour
         energyBar.value = energyAvailable;
     }
 
+
+	//------------------------------------
+
+	public void ItemReached(PickItem item)
+	{
+		reachableItems.Add(item);
+		Debug.Log("Item reached.");
+	}
+
+	public void ItemLost(PickItem item)
+	{
+		reachableItems.Remove(item);
+		Debug.Log("Item lost.");
+	}
 
 	//------------------------------------
 

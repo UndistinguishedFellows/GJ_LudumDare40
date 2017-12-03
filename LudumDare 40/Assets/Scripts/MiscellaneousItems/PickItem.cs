@@ -8,12 +8,12 @@ public class PickItem : MonoBehaviour
     public Image icon;
     public GameObject alertMark;
     private GameManager gm;
-    private TestMove player; //TODO: Adapt to player controller class
+    private CharacterMovement player;
 
     void Awake()
     {
         gm = FindObjectOfType<GameManager>();
-        player = FindObjectOfType<TestMove>(); // TODO: Adapt to player controller class
+        player = FindObjectOfType<CharacterMovement>(); // TODO: Adapt to player controller class
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -24,9 +24,9 @@ public class PickItem : MonoBehaviour
             // Active a mark to feed player this item is reachable.
             alertMark.SetActive(true);
 
-            // Notify player this item is reachable
-            other.gameObject.BroadcastMessage("ItemReached", this);
-        }
+			// Notify player this item is reachable
+			player.BroadcastMessage("ItemReached", this);
+		}
         
     }
 
@@ -38,9 +38,9 @@ public class PickItem : MonoBehaviour
             // Disable a mark to feed player this item is reachable.
             alertMark.SetActive(false);
 
-            // Notify player this item is no longer reachable
-            other.gameObject.BroadcastMessage("ItemLost", this);
-        }
+			// Notify player this item is no longer reachable
+	        player.BroadcastMessage("ItemLost", this);
+		}
     }
 
     //-------------------------------------------------
@@ -57,9 +57,9 @@ public class PickItem : MonoBehaviour
         // 3. Notify the manager.
         gm.ItemCollected();
 
-        // 4. Notify the player.
-        player.BroadcastMessage("ItemLost", this);
-    }
+		// 4. Notify the player.
+	    player.BroadcastMessage("ItemLost", this);
+	}
 
     //-------------------------------------------------
 }
