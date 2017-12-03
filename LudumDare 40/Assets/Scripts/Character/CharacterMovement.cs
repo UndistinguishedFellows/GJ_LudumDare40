@@ -67,6 +67,9 @@ public class CharacterMovement : MonoBehaviour
 
 	private Rigidbody rb;
 
+	public AudioSource stepsAsAudioSource;
+	public AudioSource interactAudioSource;
+
 	//------------------------------------
 
 	void Awake()
