@@ -94,7 +94,7 @@ public class CharacterMovement : MonoBehaviour
 		Rotation();
 	}
 
-	void OnDrawGizmos()
+	void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere(transform.position, stoneThrowRange);
