@@ -17,7 +17,7 @@ public class PickItem : MonoBehaviour
         player = FindObjectOfType<CharacterMovement>();
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter(Collider other)
     {
         // NOTE: Tag the player.
         if (other.tag.Equals("Player"))
@@ -31,7 +31,7 @@ public class PickItem : MonoBehaviour
         
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    void OnTriggerExit(Collider other)
     {
         // NOTE: Tag the player.
         if (other.tag.Equals("Player"))

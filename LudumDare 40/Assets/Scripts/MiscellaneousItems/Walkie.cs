@@ -51,8 +51,8 @@ public class Walkie : MonoBehaviour
 			else
 			{
 				// Generte noise
-				Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, noiseRadius, noiseListenersLayer);
-				foreach (Collider2D col in cols)
+				Collider[] cols = Physics.OverlapSphere(transform.position, noiseRadius, noiseListenersLayer);
+				foreach (Collider col in cols)
 				{
 					col.BroadcastMessage("OnNoise", transform.position);
 				}

@@ -65,11 +65,14 @@ public class CharacterMovement : MonoBehaviour
 
 	private List<PickItem> reachableItems;
 
+	private Rigidbody rb;
+
 	//------------------------------------
 
 	void Awake()
 	{
 		gm = FindObjectOfType<GameManager>();
+		rb = GetComponent<Rigidbody>();
 	}
 
 	void Start()
@@ -85,7 +88,7 @@ public class CharacterMovement : MonoBehaviour
 
 		reachableItems = new List<PickItem>();
 
-		CircleCollider2D col = GetComponent<CircleCollider2D>();
+		SphereCollider col = GetComponent<SphereCollider>();
 		if (col != null) col.radius = interactionRange;
 	}
 	
@@ -163,7 +166,7 @@ public class CharacterMovement : MonoBehaviour
 			if (vel != Vector3.zero)
 			{
 
-				transform.position += vel;
+				rb.position += vel;
 
 				// Generate noise
 				Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, nRad, noiseDetectorsLayer);
@@ -392,6 +395,15 @@ public class CharacterMovement : MonoBehaviour
         bInDash = false;
     }
 
+
+
+
+
+
+	void OnCollisionEnter(Collision col)
+	{
+		Debug.Log(col.other.name);
+	}
 }
 
 

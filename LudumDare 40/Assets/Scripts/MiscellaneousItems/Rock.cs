@@ -5,7 +5,7 @@ using UnityEngine;
 public class Rock : MonoBehaviour
 {
 	private Vector3 destination;
-	private Vector2 velocity;
+	private Vector3 velocity;
 
 	public float rockSpeed = 3f;
 	private float speed;
@@ -19,18 +19,19 @@ public class Rock : MonoBehaviour
 
 	private bool mustEndMovement = false;
 
-	private Rigidbody2D rb;
+	private Rigidbody rb;
 
 	//-------------------------------------------------
 
 	void Awake()
 	{
-		rb = GetComponent<Rigidbody2D>();
+		rb = GetComponent<Rigidbody>();
 	}
 
-	void OnCollisionEnter2D(Collision2D coll)
+	void OnTriggerEnter(Collider coll)
 	{
-		mustEndMovement = true;
+		if(coll.tag != "Player" && coll.tag != "Floor")
+			mustEndMovement = true;
 	}
 
 	//-------------------------------------------------
@@ -75,8 +76,8 @@ public class Rock : MonoBehaviour
 
 		// Collect all listeners could listen to the rock.
 
-		Collider2D[] targets = Physics2D.OverlapCircleAll(rb.position, noiseDefaultRadius, noiseDetectorsLayer);
-		foreach (Collider2D target in targets)
+		Collider[] targets = Physics.OverlapSphere(rb.position, noiseDefaultRadius, noiseDetectorsLayer);
+		foreach (Collider target in targets)
 		{
 			target.BroadcastMessage("OnNoise", transform.position); //TODO: 
 		}
