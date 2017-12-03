@@ -6,10 +6,21 @@ using UnityEngine.UI;
 public class CharacterMovement : MonoBehaviour
 {
 
-    public float speed;
+    public float initialSpeed = 5f;
+	private float speed;
+
+	public int initialEnergy = 10;
+	private int energyAvailable;
+
+	public int initialHabilityEnergyCost = 1;
+	private int habilityEnergyCost;
+
+	public float interactionRange = 5f;
+	public float initialNoiseRadius = 10f;
+	private float noiseRadius;
 	public float stoneThrowRange = 15f;
-
-
+	
+	
 	public float habilitiesCD = 2f;
 
 	private float timeElapsedSinceLastHabiliy;
@@ -17,9 +28,7 @@ public class CharacterMovement : MonoBehaviour
 
     public Image[] skills;
     public Slider energyBar;
-
-    public int energy;
-    public int energyCost;
+	
 
     public GameObject rockGameobject;
 	public GameObject walkie;
@@ -31,7 +40,16 @@ public class CharacterMovement : MonoBehaviour
 	private int skillFocus = 0;
 
 	private GameManager gm;
-	
+
+	public enum Directions
+	{
+		DIR_UP,
+		DIR_RIGHT,
+		DIR_DOWN,
+		DIR_LEFT
+	}
+
+	private Directions currentDirection = Directions.DIR_UP;
 
 	//------------------------------------
 
@@ -46,13 +64,17 @@ public class CharacterMovement : MonoBehaviour
 
 		timeElapsedSinceLastHabiliy = habilitiesCD; // Set to cd in order to be able to throw one on start.
 
+		speed = initialSpeed;
+		energyAvailable = initialEnergy;
+		habilityEnergyCost = initialHabilityEnergyCost;
+		noiseRadius = initialNoiseRadius;
 	}
 	
 	void Update()
 	{
 		InputMovement();
 		InputMouseAction();
-		SpawnerRotateMouse();
+		Rotation();
 
 	}
 
@@ -60,6 +82,13 @@ public class CharacterMovement : MonoBehaviour
 	{
 		Gizmos.color = Color.red;
 		Gizmos.DrawWireSphere(transform.position, stoneThrowRange);
+
+		Gizmos.color = Color.green;
+		Gizmos.DrawWireSphere(transform.position, interactionRange);
+
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireSphere(transform.position, initialNoiseRadius);
+		Gizmos.DrawWireSphere(transform.position, noiseRadius);
 	}
 
 	//------------------------------------
@@ -70,34 +99,44 @@ public class CharacterMovement : MonoBehaviour
 		set { speed = value; }
 	}
 
+	public float NoiseRadius
+	{
+		get { return noiseRadius; }
+		set { noiseRadius = value; }
+	}
+
+	public int HabEnergyCost
+	{
+		get { return habilityEnergyCost; }
+		set { habilityEnergyCost = value; }
+	}
+
 	//------------------------------------
 
 	public void InputMovement()
 	{
-		float multiplyY = 0.0f;
-		float multiplyX = 0.0f;
-		if (Input.GetKey(KeyCode.W))
-		{
-			multiplyY = Time.deltaTime * speed;
-		}
-		else if (Input.GetKey(KeyCode.S))
-		{
-			multiplyY = -Time.deltaTime * speed;
-		}
-		if (Input.GetKey(KeyCode.D))
-		{
-			multiplyX = Time.deltaTime * speed;
-		}
-		else if (Input.GetKey(KeyCode.A))
-		{
-			multiplyX = -Time.deltaTime * speed;
-		}
+		Vector3 vel = Vector3.zero;
 
-		transform.position = new Vector3(transform.position.x + multiplyX, transform.position.y + multiplyY, transform.position.z);
+		vel.x = Input.GetAxisRaw("Horizontal");
+		vel.y = Input.GetAxisRaw("Vertical");
+
+		vel.Normalize();
+		vel.z = 0;
+		vel *= (speed * Time.deltaTime);
+
+		// TODO: Crouch??
+
+		if (vel != Vector3.zero)
+		{
+
+			transform.position += vel;
+			// TODO: Generate noise
+		}
 	}
 
 	public void InputMouseAction()
 	{
+		// TODO: Interrumpt any action
 		// TODO: Some feed on CDs
 		timeElapsedSinceLastHabiliy += Time.deltaTime;
 
@@ -140,24 +179,45 @@ public class CharacterMovement : MonoBehaviour
 		if (Input.GetAxis("Mouse ScrollWheel") > 0f)
 		{
 			//Debug.Log("Mouse scroll UP");
-			ChangeSkillFocus(1);
+			ChangeSkillFocus(-1);
 		}
 		else if (Input.GetAxis("Mouse ScrollWheel") < 0f)
 		{
 			//Debug.Log("Mouse scroll DOWN");
-			ChangeSkillFocus(-1);
+			ChangeSkillFocus(1);
 		}
 	}
 	
-	void SpawnerRotateMouse()
+	void Rotation()
     {
         Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - rotationAxis.transform.position;
         difference.Normalize();
-        float rotation_z = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        rotationAxis.transform.rotation = Quaternion.Euler(0f, 0f, rotation_z-90);
+        float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+		GetDirectionFromAngle(rotationZ);
+        rotationAxis.transform.rotation = Quaternion.Euler(0f, 0f, rotationZ - 90);
     }
 
 	//------------------------------------
+
+	void GetDirectionFromAngle(float angle)
+	{
+		Directions direction = Directions.DIR_UP;
+
+		if (angle <= 45f || angle >= -22.5f)
+			direction = Directions.DIR_RIGHT;
+		else if (angle > 45 && angle < 135)
+			direction = Directions.DIR_UP;
+		else if (angle >= 135 || angle <= -135)
+			direction = Directions.DIR_LEFT;
+		else if (angle > 135 && angle < -45)
+			direction = Directions.DIR_DOWN;
+
+		if (direction != currentDirection)
+		{
+			// TODO: Change animation.
+			currentDirection = direction;
+		}
+	}
 
 	void SpawnRock()
     {
@@ -167,7 +227,7 @@ public class CharacterMovement : MonoBehaviour
 		float distance = Vector3.Distance(worldMousePoint, transform.position);
 	    if (distance > stoneThrowRange)
 	    {
-			// If  mouseisout of range, set the spawn position to the limit range on the direction.
+			// If  mouse is out of range, set the spawn position to the limit range on the direction.
 		    Vector3 dir = worldMousePoint - transform.position;
 		    dir.z = 0;
 			dir.Normalize();
@@ -203,8 +263,8 @@ public class CharacterMovement : MonoBehaviour
 	public void ChangeSkillFocus(int amount)
     {
         skillFocus += amount;
-        skillFocus=Mathf.Clamp(skillFocus,0,skills.Length-1);
-        //Debug.Log("skill selected: "+skillFocus);
+        skillFocus = Mathf.Clamp(skillFocus, 0, skills.Length - 1);
+        
         foreach(Image skill in skills)
         {
             skill.color = Color.white;
@@ -214,14 +274,14 @@ public class CharacterMovement : MonoBehaviour
 
 	public void SetEnergyCost(int value)
 	{
-		energyCost = value;
+		habilityEnergyCost = value;
 	}
 
 	public void ChangeEnergy(int amount)
     {
-        energy += amount*energyCost;
-        energy = Mathf.Clamp(energy, 0, (int)energyBar.maxValue);
-        energyBar.value = energy;
+        energyAvailable += amount * habilityEnergyCost;
+        energyAvailable = Mathf.Clamp(energyAvailable, 0, (int)energyBar.maxValue);
+        energyBar.value = energyAvailable;
     }
 
 
