@@ -8,7 +8,7 @@ public class Walkie : MonoBehaviour
 	public float noiseDuration = 5f;
 	private float noiseCounter = 0f;
 
-	public float noiseRadius;
+	public float noiseRadius = 15f;
 	public LayerMask noiseListenersLayer;
 
 	public GameObject noiseMark;
@@ -35,6 +35,7 @@ public class Walkie : MonoBehaviour
 		if (useAudioClipDurationAsNoiseDuration)
 		{
 			noiseDuration = aPlayer.clip.length;
+			aPlayer.maxDistance = noiseRadius;
 		}
 	}
 
@@ -60,6 +61,12 @@ public class Walkie : MonoBehaviour
 				noiseCounter += Time.deltaTime;
 			}
 		}
+	}
+
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireSphere(transform.position, noiseRadius);
 	}
 
 	// --------------------------------------

@@ -395,15 +395,7 @@ public class CharacterMovement : MonoBehaviour
         bInDash = false;
     }
 
-
-
-
-
-
-	void OnCollisionEnter(Collision col)
-	{
-		Debug.Log(col.other.name);
-	}
+	
 }
 
 

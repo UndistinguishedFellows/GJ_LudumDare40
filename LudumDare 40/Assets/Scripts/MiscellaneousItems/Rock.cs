@@ -21,6 +21,9 @@ public class Rock : MonoBehaviour
 
 	private Rigidbody rb;
 
+	public AudioSource aSArrived;
+	public AudioSource aSBounce;
+
 	//-------------------------------------------------
 
 	void Awake()
@@ -65,6 +68,11 @@ public class Rock : MonoBehaviour
 		if (mustEndMovement)
 		{
 			// Bounce??
+			aSBounce.Play();
+		}
+		else
+		{
+			aSArrived.Play();
 		}
 
 		ProduceNoise();
