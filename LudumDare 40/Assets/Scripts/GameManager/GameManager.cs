@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
 	public float[] speedIncrements;
 	public float[] noiseRadiusIncrements;
 
-	
+	public bool gameOver = false;
+
 	private CharacterMovement playerController;
 
     //-------------------------------------------
@@ -23,7 +24,10 @@ public class GameManager : MonoBehaviour
 
 	void Update ()
     {
-		
+	    if (gameOver)
+	    {
+		    Debug.Log("GameOver");
+	    }
 	}
 
     //-------------------------------------------

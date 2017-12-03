@@ -34,7 +34,6 @@ public class ActionGoToNode : GOAction
 
 	public override TaskStatus OnUpdate()
 	{
-		Debug.Log("Next node Completed task");
 		return TaskStatus.COMPLETED;
 	}
 
