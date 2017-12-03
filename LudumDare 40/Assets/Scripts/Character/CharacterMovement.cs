@@ -8,6 +8,10 @@ public class CharacterMovement : MonoBehaviour
 
     public float initialSpeed = 5f;
 	private float speed;
+	public float crouchSpeedDevider = 2f;
+	public float crouchNoiseDevider = 2f;
+
+	private bool isCrouch = false;
 
 	public int initialEnergy = 10;
 	private int energyAvailable;
@@ -86,9 +90,10 @@ public class CharacterMovement : MonoBehaviour
 		Gizmos.color = Color.green;
 		Gizmos.DrawWireSphere(transform.position, interactionRange);
 
-		Gizmos.color = Color.yellow;
+		Gizmos.color = Color.black;
 		Gizmos.DrawWireSphere(transform.position, initialNoiseRadius);
-		Gizmos.DrawWireSphere(transform.position, noiseRadius);
+		Gizmos.color = Color.yellow;
+		Gizmos.DrawWireSphere(transform.position, isCrouch ? noiseRadius / crouchNoiseDevider : noiseRadius);
 	}
 
 	//------------------------------------
@@ -122,9 +127,21 @@ public class CharacterMovement : MonoBehaviour
 
 		vel.Normalize();
 		vel.z = 0;
-		vel *= (speed * Time.deltaTime);
 
-		// TODO: Crouch??
+		float sp = speed;
+		float nRad = noiseRadius;
+
+		if (Input.GetKey(KeyCode.LeftControl))
+			isCrouch = true;
+		else if (isCrouch) isCrouch = false;
+
+		if (isCrouch)
+		{
+			sp /= crouchSpeedDevider;
+			nRad /= crouchNoiseDevider;
+		}
+
+		vel *= (sp * Time.deltaTime);
 
 		if (vel != Vector3.zero)
 		{
