@@ -39,8 +39,10 @@ public class CharacterMovement : MonoBehaviour
 
 	public GameObject rotationAxis;
 	public GameObject skillspawnSkillsTrasnform;
+	
+	public LayerMask noiseDetectorsLayer;
 
-    private bool bInDash = false;
+	private bool bInDash = false;
 	private int skillFocus = 0;
 
 	private GameManager gm;
@@ -133,7 +135,8 @@ public class CharacterMovement : MonoBehaviour
 
 		if (Input.GetKey(KeyCode.LeftControl))
 			isCrouch = true;
-		else if (isCrouch) isCrouch = false;
+		else if (isCrouch)
+			isCrouch = false;
 
 		if (isCrouch)
 		{
@@ -147,7 +150,13 @@ public class CharacterMovement : MonoBehaviour
 		{
 
 			transform.position += vel;
-			// TODO: Generate noise
+
+			// Generate noise
+			Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, nRad, noiseDetectorsLayer);
+			foreach (Collider2D col in cols)
+			{
+				col.BroadcastMessage("OnNoise", transform.position); //TODO: 
+			}
 		}
 	}
 
