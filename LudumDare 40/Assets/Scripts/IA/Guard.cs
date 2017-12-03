@@ -12,6 +12,9 @@ using UnityEngine;
 		public float visionDistance = 10;
 		public float pursueDistance = 15;
 
+		public Vector3 suspiciousSpot;
+		public bool search = false;
+
 		private BehaviorExecutor executor = null;
 
 		void Start()
