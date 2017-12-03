@@ -60,7 +60,11 @@ public class PickItem : MonoBehaviour
 
 		// 4. Notify the player.
 	    player.BroadcastMessage("ItemLost", this);
-	}
+
+	    AudioSource aS = GetComponent<AudioSource>();
+		aS.Play();
+		Destroy(gameObject, aS.clip.length);
+    }
 
     //-------------------------------------------------
 }
