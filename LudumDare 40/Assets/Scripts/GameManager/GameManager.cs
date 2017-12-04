@@ -107,7 +107,47 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator OnLevelEnded()
 	{
-		yield return null;
+		BoxCollider c = playerGO.GetComponent<BoxCollider>();
+		c.enabled = false;
+
+		// First go to end rope
+
+		while (Vector3.Distance(playerTransform.position, endRope.position) >= 0.2f)
+		{
+			Vector3 dir = playerTransform.position - endRope.position;
+			dir.Normalize();
+			dir.z = 0f;
+			dir *= (ropeMoveSpeed * Time.deltaTime);
+
+			playerTransform.position += dir;
+
+			yield return null;
+		}
+
+		playerTransform.position = endRope.position;
+
+		// Now move throw the rope
+
+		while (Vector3.Distance(playerTransform.position, ropeStart.position) >= 0.2f)
+		{
+			Vector3 dir = playerTransform.position - ropeStart.position;
+			dir.Normalize();
+			dir.z = 0f;
+			dir *= (ropeMoveSpeed * Time.deltaTime);
+
+			playerTransform.position += dir;
+
+			yield return null;
+		}
+
+		playerTransform.position = ropeStart.position;
+
+		infoText.gameObject.SetActive(true);
+		infoText.text = "Level ended!";
+
+		// TODO: Fade??
+
+		// TODO: Serialize points data and change scene
 	}
 
 	// -------------------------------------------
