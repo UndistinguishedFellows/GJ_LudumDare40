@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
 	private CharacterMovement playerController;
 	private Transform playerTransform;
+	private GameObject playerGO;
 
 	private float levelTimeElapse = 0f;
 
@@ -30,7 +31,8 @@ public class GameManager : MonoBehaviour
     void Awake ()
     {
 	    playerController = FindObjectOfType<CharacterMovement>();
-	    playerTransform = playerController.transform;
+	    playerGO = playerController.gameObject;
+	    playerTransform = playerGO.transform;
     }
 
 	void Start()
@@ -52,27 +54,37 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator InitialAnimation()
 	{
-		//playerTransform.position = ropeStart.position;
+		BoxCollider c = playerGO.GetComponent<BoxCollider>();
+		c.enabled = false;
+
+		playerTransform.position = ropeStart.position;
+
+		yield return new WaitForSeconds(0.5f);
 		
-		//while (Vector3.Distance(playerController.transform.position, endRope.position) >= 0.2f) // Player is appearing
-		//{
-		//	Vector3 dir = endRope.position - ropeStart.position;
-		//	dir.Normalize();
-		//	dir.z = 0f;
-		//	dir *= ropeMoveSpeed;
-		//
-		//
-		//
-		//	yield return null;
-		//	break;
-		//}
+		while (Vector3.Distance(playerController.transform.position, endRope.position) >= 0.2f) // Player is appearing
+		{
+			Vector3 dir = endRope.position - ropeStart.position;
+			dir.Normalize();
+			dir.z = 0f;
+			dir *= (ropeMoveSpeed * Time.deltaTime);
+
+			playerTransform.position += dir;
+		
+			yield return null;
+		}
+
+		playerTransform.position = endRope.position;
+		c.enabled = true;
 
 		yield return new WaitForSeconds(1.5f);
 
 
 		// Enable character control
 		playerController.enabled = true;
-		// Reproduce audio
+
+		// Reproduce audio TODO: 
+
+		// UI TODO:
 
 		// Start time counter
 		gameStarted = true;

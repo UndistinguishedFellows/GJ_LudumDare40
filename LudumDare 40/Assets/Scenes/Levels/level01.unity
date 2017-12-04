@@ -1726,6 +1726,9 @@ MonoBehaviour:
   - 1
   - 1
   - 1
+  ropeStart: {fileID: 1866682318}
+  endRope: {fileID: 1978778419}
+  ropeMoveSpeed: 3
   gameOver: 0
 --- !u!1 &1005058234
 GameObject:
