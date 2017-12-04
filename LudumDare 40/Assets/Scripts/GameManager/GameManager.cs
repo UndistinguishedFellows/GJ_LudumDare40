@@ -31,6 +31,8 @@ public class GameManager : MonoBehaviour
 	public Text timeCounter;
 	public Text infoText;
 
+	public GameObject fButton;
+
 	public enum LevelState
 	{
 		LS_Start,
@@ -185,16 +187,15 @@ public class GameManager : MonoBehaviour
 	public void EnterEndArea()
 	{
 		levelState = LevelState.LS_End;
-
-		//Disable button image //TODO
+		
+		fButton.SetActive(true);
 	}
 
 	public void ExitedEndArea()
 	{
 		levelState = LevelState.LS_Game;
 
-		//Enable button image //TODO
-
+		fButton.SetActive(false);
 	}
 
 	public void ItemCollected()
