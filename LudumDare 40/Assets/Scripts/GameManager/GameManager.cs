@@ -39,12 +39,6 @@ public class GameManager : MonoBehaviour
 			// Modify UI
 
 		}
-
-	    if (gameOver)
-	    {
-		    playerController.enabled = false;
-		    Debug.Log("GameOver");
-	    }
 	}
 
     //-------------------------------------------
@@ -70,6 +64,7 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator OnGameOver()
 	{
+		playerController.enabled = false;
 		yield return null;
 	}
 
@@ -78,7 +73,7 @@ public class GameManager : MonoBehaviour
 		yield return null;
 	}
 
-	//-------------------------------------------
+	// -------------------------------------------
 
 	public void ItemCollected()
     {
