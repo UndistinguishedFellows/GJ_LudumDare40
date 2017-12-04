@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -122,6 +123,8 @@ public class GameManager : MonoBehaviour
 	IEnumerator OnGameOver()
 	{
 		playerController.enabled = false;
+		infoText.gameObject.SetActive(true);
+
 		infoText.text = "Game over";
 
 		yield return new WaitForSeconds(1.5f);
@@ -129,6 +132,8 @@ public class GameManager : MonoBehaviour
 		// TODO: Fade??
 
 		// TODO: Serialize points data and change scene
+		Scene scene = SceneManager.GetActiveScene();
+		SceneManager.LoadScene(scene.name);
 
 	}
 
