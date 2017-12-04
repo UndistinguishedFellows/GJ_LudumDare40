@@ -68,6 +68,7 @@ public class CharacterMovement : MonoBehaviour
 	private Rigidbody rb;
 
 	public AudioSource stepsAsAudioSource;
+	public AudioSource stepsCrouchAsAudioSource;
 	public AudioSource interactAudioSource;
 
 	public AudioSource cdErrorAudioSource;
@@ -179,7 +180,10 @@ public class CharacterMovement : MonoBehaviour
 				// Reproduce steps sound
 				if (!stepsAsAudioSource.isPlaying)
 				{
-					stepsAsAudioSource.Play();
+					if(isCrouch)
+						stepsCrouchAsAudioSource.Play();
+					else
+						stepsAsAudioSource.Play();
 				}
 
 				// Generate noise
@@ -195,6 +199,10 @@ public class CharacterMovement : MonoBehaviour
 				if (stepsAsAudioSource.isPlaying)
 				{
 					stepsAsAudioSource.Stop();
+				}
+				if (stepsCrouchAsAudioSource.isPlaying)
+				{
+					stepsCrouchAsAudioSource.Stop();
 				}
 			}
 		}
@@ -218,38 +226,42 @@ public class CharacterMovement : MonoBehaviour
 			lasFrameWasCDUp = true;
 		}
 
-		if (Input.GetKeyDown(KeyCode.Mouse0)) // Left mouse button
+		if (reachableItems.Count > 0)
 		{
-			// Begin the interaction
-			isInteracting = true;
-			interactAudioSource.Play();
-		}
-		else if(Input.GetKey(KeyCode.Mouse0))
-		{
-			// Keep interaction
-			if (interactionCounter >= interactionDuration)
+			if (Input.GetKeyDown(KeyCode.Mouse0)) // Left mouse button
 			{
-				interactAudioSource.Stop();
+				// Begin the interaction
+				isInteracting = true;
+				interactAudioSource.Play();
+			}
+			else if (Input.GetKey(KeyCode.Mouse0))
+			{
+				// Keep interaction
+				if (interactionCounter >= interactionDuration)
+				{
+					interactAudioSource.Stop();
+					isInteracting = false;
+					interactionCounter = 0f;
+
+					foreach (PickItem item in reachableItems)
+					{
+						item.Pick();
+					}
+					reachableItems.Clear();
+				}
+				else
+				{
+					interactionCounter += Time.deltaTime;
+				}
+			}
+			else if (Input.GetKeyUp(KeyCode.Mouse0))
+			{
+				// Stop interaction
 				isInteracting = false;
 				interactionCounter = 0f;
+				interactAudioSource.Stop();
+			}
 
-				foreach (PickItem item in reachableItems)
-				{
-					item.Pick();
-				}
-				reachableItems.Clear();
-			}
-			else
-			{
-				interactionCounter += Time.deltaTime;
-			}
-		}
-		else if (Input.GetKeyUp(KeyCode.Mouse0))
-		{
-			// Stop interaction
-			isInteracting = false;
-			interactionCounter = 0f;
-			interactAudioSource.Stop();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Mouse1)) // Right mouse button
