@@ -49,8 +49,7 @@ public class PickItem : MonoBehaviour
     public void Pick()
     {
 	    AudioSource aS = GetComponent<AudioSource>();
-	    Destroy(gameObject, aS.clip.length);
-		aS.Play();
+	    aS.Play();
 		
         alertMark.SetActive(false);
 		
@@ -59,6 +58,7 @@ public class PickItem : MonoBehaviour
         gm.ItemCollected();
 
 	    
+		Destroy(gameObject, aS.clip.length);
     }
 
     //-------------------------------------------------

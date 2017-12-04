@@ -263,13 +263,13 @@ public class CharacterMovement : MonoBehaviour
 
 		if (reachableItems.Count > 0)
 		{
-			if (Input.GetKeyDown(KeyCode.F)) // Left mouse button
+			if (Input.GetKeyDown(KeyCode.Mouse0)) // Left mouse button
 			{
 				// Begin the interaction
 				isInteracting = true;
 				interactAudioSource.Play();
 			}
-			else if (Input.GetKey(KeyCode.F))
+			else if (Input.GetKey(KeyCode.Mouse0))
 			{
 				// Keep interaction
 				if (interactionCounter >= interactionDuration)
@@ -289,7 +289,7 @@ public class CharacterMovement : MonoBehaviour
 					interactionCounter += Time.deltaTime;
 				}
 			}
-			else if (Input.GetKeyUp(KeyCode.F))
+			else if (Input.GetKeyUp(KeyCode.Mouse0))
 			{
 				// Stop interaction
 				isInteracting = false;
