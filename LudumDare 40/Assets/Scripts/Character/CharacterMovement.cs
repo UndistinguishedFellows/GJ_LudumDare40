@@ -171,11 +171,25 @@ public class CharacterMovement : MonoBehaviour
 
 				rb.position += vel;
 
+				// Reproduce steps sound
+				if (!stepsAsAudioSource.isPlaying)
+				{
+					stepsAsAudioSource.Play();
+				}
+
 				// Generate noise
 				Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, nRad, noiseDetectorsLayer);
 				foreach (Collider2D col in cols)
 				{
-					col.BroadcastMessage("OnNoise", transform.position); //TODO: Grphical noise feed
+					col.BroadcastMessage("OnNoise", transform.position); //TODO: Graphical noise feed
+				}
+			}
+			else
+			{
+				// Stop steps sound
+				if (stepsAsAudioSource.isPlaying)
+				{
+					stepsAsAudioSource.Stop();
 				}
 			}
 		}
