@@ -31,6 +31,15 @@ public class GameManager : MonoBehaviour
 	public Text timeCounter;
 	public Text infoText;
 
+	public enum LevelState
+	{
+		LS_Start,
+		LS_Game,
+		LS_End
+	}
+
+	public LevelState levelState = LevelState.LS_Start;
+
     //-------------------------------------------
     void Awake ()
     {
@@ -55,6 +64,15 @@ public class GameManager : MonoBehaviour
 
 			timeCounter.text = string.Format("{0:0}:{1:00}", (int)min, (int)secs);
 		}
+
+		if (levelState == LevelState.LS_End)
+		{
+			if (Input.GetKeyDown(KeyCode.F))
+			{
+				gameEnded = true;
+				StartCoroutine(OnLevelEnded());
+			}
+		}
 	}
 
     //-------------------------------------------
@@ -68,7 +86,7 @@ public class GameManager : MonoBehaviour
 
 		yield return new WaitForSeconds(0.5f);
 		
-		while (Vector3.Distance(playerController.transform.position, endRope.position) >= 0.2f) // Player is appearing
+		while (Vector3.Distance(playerTransform.position, endRope.position) >= 0.2f) // Player is appearing
 		{
 			Vector3 dir = endRope.position - ropeStart.position;
 			dir.Normalize();
@@ -102,11 +120,21 @@ public class GameManager : MonoBehaviour
 	IEnumerator OnGameOver()
 	{
 		playerController.enabled = false;
-		yield return null;
+		infoText.text = "Game over";
+
+		yield return new WaitForSeconds(1.5f);
+
+		// TODO: Fade??
+
+		// TODO: Serialize points data and change scene
+
 	}
 
 	IEnumerator OnLevelEnded()
 	{
+		// Disable button image
+		//TODO
+
 		BoxCollider c = playerGO.GetComponent<BoxCollider>();
 		c.enabled = false;
 
@@ -114,7 +142,7 @@ public class GameManager : MonoBehaviour
 
 		while (Vector3.Distance(playerTransform.position, endRope.position) >= 0.2f)
 		{
-			Vector3 dir = playerTransform.position - endRope.position;
+			Vector3 dir = endRope.position - playerTransform.position;
 			dir.Normalize();
 			dir.z = 0f;
 			dir *= (ropeMoveSpeed * Time.deltaTime);
@@ -126,11 +154,13 @@ public class GameManager : MonoBehaviour
 
 		playerTransform.position = endRope.position;
 
+		yield return new WaitForSeconds(0.75f);
+
 		// Now move throw the rope
 
 		while (Vector3.Distance(playerTransform.position, ropeStart.position) >= 0.2f)
 		{
-			Vector3 dir = playerTransform.position - ropeStart.position;
+			Vector3 dir = ropeStart.position - playerTransform.position;
 			dir.Normalize();
 			dir.z = 0f;
 			dir *= (ropeMoveSpeed * Time.deltaTime);
@@ -151,6 +181,21 @@ public class GameManager : MonoBehaviour
 	}
 
 	// -------------------------------------------
+
+	public void EnterEndArea()
+	{
+		levelState = LevelState.LS_End;
+
+		//Disable button image //TODO
+	}
+
+	public void ExitedEndArea()
+	{
+		levelState = LevelState.LS_Game;
+
+		//Enable button image //TODO
+
+	}
 
 	public void ItemCollected()
     {
