@@ -14,27 +14,14 @@ public class Guard : MonoBehaviour
 
 	public Vector3 suspiciousSpot;
 	public bool search = false;
-	private bool wasMoving = false;
 
-	public enum Directions
-	{
-		DIR_UP,
-		DIR_RIGHT,
-		DIR_DOWN,
-		DIR_LEFT
-	}
-	private Directions currentDirection = Directions.DIR_UP;
 	//------------------------------------
 
 	private BehaviorExecutor executor = null;
-	private Rigidbody rb;
-	private Animator animator;
 
 	void Start()
 		{
 			executor = GetComponent<BehaviorExecutor>();
-			rb = GetComponentInParent<Rigidbody>();
-			animator = GetComponentInChildren<Animator>();
 		}
 	void Update()
 		{
@@ -51,56 +38,6 @@ public class Guard : MonoBehaviour
 			}
 			if(GameOver > 0)
 				Debug.Log("GameOver");
-
-			Vector3 velocity = transform.InverseTransformDirection(rb.velocity);
-			
-			Directions direction = Directions.DIR_UP;
-
-			if (Mathf.Abs(velocity.x) >= Mathf.Abs(velocity.y))
-			{
-				if (velocity.x > 0)
-				{
-					direction = Directions.DIR_RIGHT;
-				}
-				else
-				{
-					direction = Directions.DIR_LEFT;
-				}
-			}
-			else
-			{
-				if (velocity.y > 0)
-				{
-					direction = Directions.DIR_UP;
-				}
-				else
-				{
-					direction = Directions.DIR_DOWN;
-				}
-			}
-
-			if (direction != currentDirection || !wasMoving)
-			{
-				// TODO: Change animation.
-				currentDirection = direction;
-
-				switch (currentDirection)
-				{
-					case Directions.DIR_LEFT:
-						animator.SetInteger("direction", 3);
-						break;
-					case Directions.DIR_RIGHT:
-						animator.SetInteger("direction", 2);
-						break;
-					case Directions.DIR_UP:
-						animator.SetInteger("direction", 1);
-						break;
-					case Directions.DIR_DOWN:
-						animator.SetInteger("direction", 0);
-						break;
-				}
-			}
-
 		}
 
 	void OnDrawGizmos()
