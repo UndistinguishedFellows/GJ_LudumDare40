@@ -19,7 +19,8 @@ namespace BBUnity.Actions
 
 		public override void OnStart()
 		{
-			var.gameOver = value;
+			if(value) var.GameOver();
+			//var.gameOver = value;
 		}
 
 		public override TaskStatus OnUpdate()

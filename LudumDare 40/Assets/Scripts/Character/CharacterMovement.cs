@@ -67,6 +67,9 @@ public class CharacterMovement : MonoBehaviour
 
 	private Rigidbody rb;
 
+	public AudioSource stepsAsAudioSource;
+	public AudioSource interactAudioSource;
+
 	//------------------------------------
 
 	void Awake()
@@ -172,7 +175,7 @@ public class CharacterMovement : MonoBehaviour
 				Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, nRad, noiseDetectorsLayer);
 				foreach (Collider2D col in cols)
 				{
-					col.BroadcastMessage("OnNoise", transform.position); //TODO: 
+					col.BroadcastMessage("OnNoise", transform.position); //TODO: Grphical noise feed
 				}
 			}
 		}
@@ -182,14 +185,13 @@ public class CharacterMovement : MonoBehaviour
 			Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, noiseRadius * interactionNoiseMultiplier, noiseDetectorsLayer);
 			foreach (Collider2D col in cols)
 			{
-				col.BroadcastMessage("OnNoise", transform.position); //TODO: 
+				col.BroadcastMessage("OnNoise", transform.position); //TODO:  Grphical noise feed
 			}
 		}
 	}
 
 	public void InputMouseAction()
 	{
-		// TODO: Interrumpt any hability??
 		// TODO: Some feed on CDs
 		timeElapsedSinceLastHabiliy += Time.deltaTime;
 
@@ -197,12 +199,14 @@ public class CharacterMovement : MonoBehaviour
 		{
 			// Begin the interaction
 			isInteracting = true;
+			interactAudioSource.Play();
 		}
 		else if(Input.GetKey(KeyCode.Mouse0))
 		{
 			// Keep interaction
 			if (interactionCounter >= interactionDuration)
 			{
+				interactAudioSource.Stop();
 				isInteracting = false;
 				interactionCounter = 0f;
 
@@ -210,6 +214,7 @@ public class CharacterMovement : MonoBehaviour
 				{
 					item.Pick();
 				}
+				reachableItems.Clear();
 			}
 			else
 			{
@@ -221,35 +226,43 @@ public class CharacterMovement : MonoBehaviour
 			// Stop interaction
 			isInteracting = false;
 			interactionCounter = 0f;
+			interactAudioSource.Stop();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Mouse1)) // Right mouse button
 		{
 			if (timeElapsedSinceLastHabiliy >= habilitiesCD)
 			{
-				ChangeEnergy(-1);
-
-				switch (skillFocus)
+				if (energyAvailable >= habilityEnergyCost)
 				{
-					case 0:
-						SpawnRock();
-						break;
+					ChangeEnergy(-1);
 
-					case 1:
+					switch (skillFocus)
 					{
-						if(locatedWalkie == null)
-							SpawnWalkie();
-						else
-							if(!locatedWalkie.IsReproducing) locatedWalkie.Activate();
+						case 0:
+							SpawnRock();
+							break;
 
-						break;
-					}
+						case 1:
+						{
+							if (locatedWalkie == null)
+								SpawnWalkie();
+							else if (!locatedWalkie.IsReproducing) locatedWalkie.Activate();
 
-					case 2:
-					{
-						Dash();
-						break;
+							break;
+						}
+
+						case 2:
+						{
+							Dash();
+							break;
+						}
 					}
+				}
+				else
+				{
+					//TODO: Reproduce error noise
+
 				}
 
 				timeElapsedSinceLastHabiliy = 0f;

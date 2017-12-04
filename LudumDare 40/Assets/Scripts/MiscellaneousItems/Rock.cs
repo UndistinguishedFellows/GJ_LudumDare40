@@ -87,7 +87,7 @@ public class Rock : MonoBehaviour
 		Collider[] targets = Physics.OverlapSphere(rb.position, noiseDefaultRadius, noiseDetectorsLayer);
 		foreach (Collider target in targets)
 		{
-			target.BroadcastMessage("OnNoise", transform.position); //TODO: 
+			target.BroadcastMessage("OnNoise", transform.position); //TODO:  Grphical noise feed
 		}
 
 

@@ -15,15 +15,31 @@ public class GameManager : MonoBehaviour
 
 	private CharacterMovement playerController;
 
+	private float levelTimeElapse = 0f;
+
+	private bool gameStarted = false;
+	private bool gameEnded = false;
+
     //-------------------------------------------
     void Awake ()
     {
 	    playerController = FindObjectOfType<CharacterMovement>();
     }
-	
+
+	void Start()
+	{
+		StartCoroutine(InitialAnimation());
+	}
 
 	void Update ()
-    {
+	{
+		if (gameStarted && !gameOver && !gameEnded)
+		{
+			levelTimeElapse += Time.deltaTime;
+			// Modify UI
+
+		}
+
 	    if (gameOver)
 	    {
 		    playerController.enabled = false;
@@ -33,11 +49,38 @@ public class GameManager : MonoBehaviour
 
     //-------------------------------------------
 
-    
+	IEnumerator InitialAnimation()
+	{
+		while (true) // Player is appearing
+		{
+			yield return null;
+			break;
+		}
 
-    //-------------------------------------------
+		yield return new WaitForSeconds(1.5f);
 
-    public void ItemCollected()
+
+		// Enable character control
+		playerController.enabled = true;
+		// Reproduce audio
+
+		// Start time counter
+		gameStarted = true;
+	}
+
+	IEnumerator OnGameOver()
+	{
+		yield return null;
+	}
+
+	IEnumerator OnLevelEnded()
+	{
+		yield return null;
+	}
+
+	//-------------------------------------------
+
+	public void ItemCollected()
     {
 	    if (itemsPicked >= maxItemsToPick)
 	    {
@@ -49,8 +92,19 @@ public class GameManager : MonoBehaviour
 	    playerController.HabEnergyCost = playerController.HabEnergyCost + energyCostIncrements[itemsPicked];
 	    playerController.NoiseRadius = playerController.NoiseRadius + noiseRadiusIncrements[itemsPicked];
 		
-		// TODO: Modify UI to show stars??
 		itemsPicked++;
 		
     }
+
+	public void GameOver()
+	{
+		gameOver = true;
+		StartCoroutine(OnGameOver());
+	}
+
+	public void EndLevel()
+	{
+		gameEnded = true;
+		StartCoroutine(OnLevelEnded());
+	}
 }
