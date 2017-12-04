@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class GameManager : MonoBehaviour
 	private bool gameStarted = false;
 	private bool gameEnded = false;
 
+	public Text timeCounter;
+	public Text infoText;
+
     //-------------------------------------------
     void Awake ()
     {
@@ -46,7 +50,10 @@ public class GameManager : MonoBehaviour
 		{
 			levelTimeElapse += Time.deltaTime;
 			// Modify UI
+			float secs = levelTimeElapse % 60;
+			float min = levelTimeElapse / 60;
 
+			timeCounter.text = string.Format("{0:0}:{1:00}", (int)min, (int)secs);
 		}
 	}
 
@@ -76,16 +83,18 @@ public class GameManager : MonoBehaviour
 		playerTransform.position = endRope.position;
 		c.enabled = true;
 
+		infoText.gameObject.SetActive(true);
+		infoText.text = "Start";
+
 		yield return new WaitForSeconds(1.5f);
 
+		infoText.gameObject.SetActive(false);
 
 		// Enable character control
 		playerController.enabled = true;
 
 		// Reproduce audio TODO: 
-
-		// UI TODO:
-
+		
 		// Start time counter
 		gameStarted = true;
 	}
