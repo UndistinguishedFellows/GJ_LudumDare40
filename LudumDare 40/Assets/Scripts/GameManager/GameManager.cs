@@ -11,9 +11,15 @@ public class GameManager : MonoBehaviour
 	public float[] speedIncrements;
 	public float[] noiseRadiusIncrements;
 
+	public Transform ropeStart;
+	public Transform endRope;
+
+	public float ropeMoveSpeed = 3f;
+
 	public bool gameOver = false;
 
 	private CharacterMovement playerController;
+	private Transform playerTransform;
 
 	private float levelTimeElapse = 0f;
 
@@ -24,6 +30,7 @@ public class GameManager : MonoBehaviour
     void Awake ()
     {
 	    playerController = FindObjectOfType<CharacterMovement>();
+	    playerTransform = playerController.transform;
     }
 
 	void Start()
@@ -45,11 +52,20 @@ public class GameManager : MonoBehaviour
 
 	IEnumerator InitialAnimation()
 	{
-		while (true) // Player is appearing
-		{
-			yield return null;
-			break;
-		}
+		//playerTransform.position = ropeStart.position;
+		
+		//while (Vector3.Distance(playerController.transform.position, endRope.position) >= 0.2f) // Player is appearing
+		//{
+		//	Vector3 dir = endRope.position - ropeStart.position;
+		//	dir.Normalize();
+		//	dir.z = 0f;
+		//	dir *= ropeMoveSpeed;
+		//
+		//
+		//
+		//	yield return null;
+		//	break;
+		//}
 
 		yield return new WaitForSeconds(1.5f);
 

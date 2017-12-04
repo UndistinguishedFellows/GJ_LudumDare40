@@ -328,7 +328,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 187cce95e2b75a54b96bc3bcd2a67feb, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ba9160b1d916faf469813ae3a883589e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -408,7 +408,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 76ee7895b00e3764b97576a0089b3fd6, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f979fc5f44d8e0948a71086fbc536fab, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -488,7 +488,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 7200e916ef7d5014ab2c30ea291ebc22, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6be183c552d79b0419dc29111a21289c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -772,8 +772,8 @@ MonoBehaviour:
   stepsAsAudioSource: {fileID: 82657900974834664}
   stepsCrouchAsAudioSource: {fileID: 82705785187221750}
   interactAudioSource: {fileID: 82761362422561906}
-  cdErrorAudioSource: {fileID: 82650921126952800}
-  cdRestoredAudioSource: {fileID: 82603385404522950}
+  cdErrorAudioSource: {fileID: 82603385404522950}
+  cdRestoredAudioSource: {fileID: 82650921126952800}
 --- !u!124 &124373327458271476
 Behaviour:
   m_ObjectHideFlags: 1

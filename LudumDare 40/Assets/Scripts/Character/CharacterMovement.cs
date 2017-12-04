@@ -178,16 +178,25 @@ public class CharacterMovement : MonoBehaviour
 				rb.position += vel;
 
 				// Reproduce steps sound
-				if (!stepsAsAudioSource.isPlaying)
+				if (isCrouch)
 				{
-					if(isCrouch)
+					if(stepsAsAudioSource.isPlaying)
+						stepsAsAudioSource.Stop();
+
+					if (!stepsCrouchAsAudioSource.isPlaying)
 						stepsCrouchAsAudioSource.Play();
-					else
+				}
+				else
+				{
+					if (stepsCrouchAsAudioSource.isPlaying)
+						stepsCrouchAsAudioSource.Stop();
+
+					if (!stepsAsAudioSource.isPlaying)
 						stepsAsAudioSource.Play();
 				}
 
-				// Generate noise
-				Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, nRad, noiseDetectorsLayer);
+					// Generate noise
+					Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, nRad, noiseDetectorsLayer);
 				foreach (Collider2D col in cols)
 				{
 					col.BroadcastMessage("OnNoise", transform.position); //TODO: Graphical noise feed
@@ -213,6 +222,15 @@ public class CharacterMovement : MonoBehaviour
 			foreach (Collider2D col in cols)
 			{
 				col.BroadcastMessage("OnNoise", transform.position); //TODO:  Grphical noise feed
+			}
+
+			if (stepsAsAudioSource.isPlaying)
+			{
+				stepsAsAudioSource.Stop();
+			}
+			if (stepsCrouchAsAudioSource.isPlaying)
+			{
+				stepsCrouchAsAudioSource.Stop();
 			}
 		}
 	}
