@@ -70,6 +70,11 @@ public class CharacterMovement : MonoBehaviour
 	public AudioSource stepsAsAudioSource;
 	public AudioSource interactAudioSource;
 
+	public AudioSource cdErrorAudioSource;
+	public AudioSource cdRestoredAudioSource;
+
+	private bool lasFrameWasCDUp = true;
+
 	//------------------------------------
 
 	void Awake()
@@ -206,8 +211,12 @@ public class CharacterMovement : MonoBehaviour
 
 	public void InputMouseAction()
 	{
-		// TODO: Some feed on CDs
 		timeElapsedSinceLastHabiliy += Time.deltaTime;
+		if (timeElapsedSinceLastHabiliy >= habilitiesCD && !lasFrameWasCDUp)
+		{
+			cdRestoredAudioSource.Play();
+			lasFrameWasCDUp = true;
+		}
 
 		if (Input.GetKeyDown(KeyCode.Mouse0)) // Left mouse button
 		{
@@ -249,6 +258,7 @@ public class CharacterMovement : MonoBehaviour
 			{
 				if (energyAvailable >= habilityEnergyCost)
 				{
+					lasFrameWasCDUp = false;
 					ChangeEnergy(-1);
 
 					switch (skillFocus)
@@ -275,11 +285,14 @@ public class CharacterMovement : MonoBehaviour
 				}
 				else
 				{
-					//TODO: Reproduce error noise
-
+					cdErrorAudioSource.Play();
 				}
 
 				timeElapsedSinceLastHabiliy = 0f;
+			}
+			else
+			{
+				cdErrorAudioSource.Play();
 			}
 		}
 
