@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 114028035088906404}
   - component: {fileID: 82417086576230114}
   - component: {fileID: 81078824882817654}
+  - component: {fileID: 114103777709570060}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -94,6 +95,7 @@ GameObject:
   - component: {fileID: 82761362422561906}
   - component: {fileID: 82650921126952800}
   - component: {fileID: 82603385404522950}
+  - component: {fileID: 82705785187221750}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -201,6 +203,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -329,7 +332,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 187cce95e2b75a54b96bc3bcd2a67feb, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ba9160b1d916faf469813ae3a883589e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -409,7 +412,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 76ee7895b00e3764b97576a0089b3fd6, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f979fc5f44d8e0948a71086fbc536fab, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -489,7 +492,87 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 7200e916ef7d5014ab2c30ea291ebc22, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6be183c552d79b0419dc29111a21289c, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
+--- !u!82 &82705785187221750
+AudioSource:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1645789509056208}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 6be183c552d79b0419dc29111a21289c, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -672,6 +755,35 @@ MonoBehaviour:
   smoothStep: 0.125
   offset: {x: 0, y: 0, z: 0}
   autoCalcOffset: 1
+--- !u!114 &114103777709570060
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1571685181633828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78da3f00f3328541b4526c0b0b5ec5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineThickness: 1
+  lineIntensity: 1
+  fillAmount: 0.114
+  lineColor0: {r: 1, g: 0.91643006, b: 0.24264705, a: 1}
+  lineColor1: {r: 1, g: 0, b: 0.8068962, a: 1}
+  lineColor2: {r: 0.375, g: 0.8189657, b: 1, a: 1}
+  additiveRendering: 0
+  backfaceCulling: 1
+  cornerOutlines: 0
+  addLinesBetweenColors: 1
+  scaleWithScreenSize: 1
+  alphaCutoff: 0.5
+  flipY: 0
+  sourceCamera: {fileID: 20719733547859700}
+  outlineCamera: {fileID: 0}
+  outlineShaderMaterial: {fileID: 0}
+  renderTexture: {fileID: 0}
+  extraRenderTexture: {fileID: 0}
 --- !u!114 &114764110918452792
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -708,9 +820,10 @@ MonoBehaviour:
     m_Bits: 256
   interactionNoiseMultiplier: 0.5
   stepsAsAudioSource: {fileID: 82657900974834664}
+  stepsCrouchAsAudioSource: {fileID: 82705785187221750}
   interactAudioSource: {fileID: 82761362422561906}
-  cdErrorAudioSource: {fileID: 82650921126952800}
-  cdRestoredAudioSource: {fileID: 82603385404522950}
+  cdErrorAudioSource: {fileID: 82603385404522950}
+  cdRestoredAudioSource: {fileID: 82650921126952800}
 --- !u!124 &124373327458271476
 Behaviour:
   m_ObjectHideFlags: 1

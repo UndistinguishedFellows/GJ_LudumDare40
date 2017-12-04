@@ -68,6 +68,7 @@ public class CharacterMovement : MonoBehaviour
 	private Rigidbody rb;
 
 	public AudioSource stepsAsAudioSource;
+	public AudioSource stepsCrouchAsAudioSource;
 	public AudioSource interactAudioSource;
 
 	public AudioSource cdErrorAudioSource;
@@ -187,13 +188,25 @@ public class CharacterMovement : MonoBehaviour
 				rb.position += vel;
 
 				// Reproduce steps sound
-				if (!stepsAsAudioSource.isPlaying)
+				if (isCrouch)
 				{
-					stepsAsAudioSource.Play();
+					if(stepsAsAudioSource.isPlaying)
+						stepsAsAudioSource.Stop();
+
+					if (!stepsCrouchAsAudioSource.isPlaying)
+						stepsCrouchAsAudioSource.Play();
+				}
+				else
+				{
+					if (stepsCrouchAsAudioSource.isPlaying)
+						stepsCrouchAsAudioSource.Stop();
+
+					if (!stepsAsAudioSource.isPlaying)
+						stepsAsAudioSource.Play();
 				}
 
-				// Generate noise
-				Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, nRad, noiseDetectorsLayer);
+					// Generate noise
+					Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, nRad, noiseDetectorsLayer);
 				foreach (Collider2D col in cols)
 				{
 					col.BroadcastMessage("OnNoise", transform.position); //TODO: Graphical noise feed
@@ -206,11 +219,17 @@ public class CharacterMovement : MonoBehaviour
 				{
 					stepsAsAudioSource.Stop();
 				}
+				if (stepsCrouchAsAudioSource.isPlaying)
+				{
+					stepsCrouchAsAudioSource.Stop();
+				}
+
 				if (wasMoving)
 				{
 					animator.SetInteger("direction", 0);
 				}
 				wasMoving = false;
+
 			}
 		}
 		else
@@ -220,6 +239,15 @@ public class CharacterMovement : MonoBehaviour
 			foreach (Collider2D col in cols)
 			{
 				col.BroadcastMessage("OnNoise", transform.position); //TODO:  Grphical noise feed
+			}
+
+			if (stepsAsAudioSource.isPlaying)
+			{
+				stepsAsAudioSource.Stop();
+			}
+			if (stepsCrouchAsAudioSource.isPlaying)
+			{
+				stepsCrouchAsAudioSource.Stop();
 			}
 		}
 	}
@@ -233,38 +261,42 @@ public class CharacterMovement : MonoBehaviour
 			lasFrameWasCDUp = true;
 		}
 
-		if (Input.GetKeyDown(KeyCode.Mouse0)) // Left mouse button
+		if (reachableItems.Count > 0)
 		{
-			// Begin the interaction
-			isInteracting = true;
-			interactAudioSource.Play();
-		}
-		else if(Input.GetKey(KeyCode.Mouse0))
-		{
-			// Keep interaction
-			if (interactionCounter >= interactionDuration)
+			if (Input.GetKeyDown(KeyCode.Mouse0)) // Left mouse button
 			{
-				interactAudioSource.Stop();
+				// Begin the interaction
+				isInteracting = true;
+				interactAudioSource.Play();
+			}
+			else if (Input.GetKey(KeyCode.Mouse0))
+			{
+				// Keep interaction
+				if (interactionCounter >= interactionDuration)
+				{
+					interactAudioSource.Stop();
+					isInteracting = false;
+					interactionCounter = 0f;
+
+					foreach (PickItem item in reachableItems)
+					{
+						item.Pick();
+					}
+					reachableItems.Clear();
+				}
+				else
+				{
+					interactionCounter += Time.deltaTime;
+				}
+			}
+			else if (Input.GetKeyUp(KeyCode.Mouse0))
+			{
+				// Stop interaction
 				isInteracting = false;
 				interactionCounter = 0f;
+				interactAudioSource.Stop();
+			}
 
-				foreach (PickItem item in reachableItems)
-				{
-					item.Pick();
-				}
-				reachableItems.Clear();
-			}
-			else
-			{
-				interactionCounter += Time.deltaTime;
-			}
-		}
-		else if (Input.GetKeyUp(KeyCode.Mouse0))
-		{
-			// Stop interaction
-			isInteracting = false;
-			interactionCounter = 0f;
-			interactAudioSource.Stop();
 		}
 
 		if (Input.GetKeyDown(KeyCode.Mouse1)) // Right mouse button
