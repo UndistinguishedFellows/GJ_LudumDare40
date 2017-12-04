@@ -73,7 +73,10 @@ public class CharacterMovement : MonoBehaviour
 	public AudioSource cdErrorAudioSource;
 	public AudioSource cdRestoredAudioSource;
 
+	private Animator animator;
+
 	private bool lasFrameWasCDUp = true;
+	private bool wasMoving = false;
 
 	//------------------------------------
 
@@ -98,6 +101,8 @@ public class CharacterMovement : MonoBehaviour
 
 		SphereCollider col = GetComponent<SphereCollider>();
 		if (col != null) col.radius = interactionRange;
+
+		animator = GetComponentInChildren<Animator>();
 	}
 	
 	void Update()
@@ -173,7 +178,12 @@ public class CharacterMovement : MonoBehaviour
 
 			if (vel != Vector3.zero)
 			{
-
+				GetDirectionFromAngle(vel);
+				if (!wasMoving)
+				{
+					wasMoving = true;
+				}
+				
 				rb.position += vel;
 
 				// Reproduce steps sound
@@ -196,6 +206,11 @@ public class CharacterMovement : MonoBehaviour
 				{
 					stepsAsAudioSource.Stop();
 				}
+				if (wasMoving)
+				{
+					animator.SetInteger("direction", 0);
+				}
+				wasMoving = false;
 			}
 		}
 		else
@@ -313,29 +328,59 @@ public class CharacterMovement : MonoBehaviour
         Vector3 difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - rotationAxis.transform.position;
         difference.Normalize();
         float rotationZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-		GetDirectionFromAngle(rotationZ);
+		//GetDirectionFromAngle(rotationZ);
         rotationAxis.transform.rotation = Quaternion.Euler(0f, 0f, rotationZ - 90);
     }
 
 	//------------------------------------
 
-	void GetDirectionFromAngle(float angle)
+	void GetDirectionFromAngle(Vector3 velocity)
 	{
 		Directions direction = Directions.DIR_UP;
 
-		if (angle <= 45f || angle >= -22.5f)
-			direction = Directions.DIR_RIGHT;
-		else if (angle > 45 && angle < 135)
-			direction = Directions.DIR_UP;
-		else if (angle >= 135 || angle <= -135)
-			direction = Directions.DIR_LEFT;
-		else if (angle > 135 && angle < -45)
-			direction = Directions.DIR_DOWN;
+		if (Mathf.Abs(velocity.x) >= Mathf.Abs(velocity.y))
+		{
+			if (velocity.x > 0)
+			{
+				direction = Directions.DIR_RIGHT;
+			}
+			else
+			{
+				direction = Directions.DIR_LEFT;
+			}
+		}
+		else
+		{
+			if (velocity.y > 0)
+			{
+				direction = Directions.DIR_UP;
+			}
+			else
+			{
+				direction = Directions.DIR_DOWN;
+			}
+		}
 
-		if (direction != currentDirection)
+		if (direction != currentDirection || !wasMoving)
 		{
 			// TODO: Change animation.
 			currentDirection = direction;
+
+			switch (currentDirection)
+			{
+				case Directions.DIR_LEFT:
+					animator.SetInteger("direction", 4);
+					break;
+				case Directions.DIR_RIGHT:
+					animator.SetInteger("direction", 3);
+					break;
+				case Directions.DIR_UP:
+					animator.SetInteger("direction", 2);
+					break;
+				case Directions.DIR_DOWN:
+					animator.SetInteger("direction", 1);
+					break;
+			}
 		}
 	}
 
