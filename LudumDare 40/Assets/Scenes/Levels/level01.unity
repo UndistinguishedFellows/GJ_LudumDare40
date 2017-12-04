@@ -2257,16 +2257,6 @@ Prefab:
       propertyPath: energyBarSlider
       value: 
       objectReference: {fileID: 936192896}
-    - target: {fileID: 82657900974834664, guid: 85a78ca91c4a4af47a9e941c895c0335,
-        type: 2}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 82761362422561906, guid: 85a78ca91c4a4af47a9e941c895c0335,
-        type: 2}
-      propertyPath: m_PlayOnAwake
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 85a78ca91c4a4af47a9e941c895c0335, type: 2}
   m_IsPrefabParent: 0

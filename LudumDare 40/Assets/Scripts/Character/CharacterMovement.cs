@@ -175,7 +175,7 @@ public class CharacterMovement : MonoBehaviour
 				Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, nRad, noiseDetectorsLayer);
 				foreach (Collider2D col in cols)
 				{
-					col.BroadcastMessage("OnNoise", transform.position); //TODO: 
+					col.BroadcastMessage("OnNoise", transform.position); //TODO: Grphical noise feed
 				}
 			}
 		}
@@ -185,14 +185,13 @@ public class CharacterMovement : MonoBehaviour
 			Collider2D[] cols = Physics2D.OverlapCircleAll(transform.position, noiseRadius * interactionNoiseMultiplier, noiseDetectorsLayer);
 			foreach (Collider2D col in cols)
 			{
-				col.BroadcastMessage("OnNoise", transform.position); //TODO: 
+				col.BroadcastMessage("OnNoise", transform.position); //TODO:  Grphical noise feed
 			}
 		}
 	}
 
 	public void InputMouseAction()
 	{
-		// TODO: Interrumpt any hability??
 		// TODO: Some feed on CDs
 		timeElapsedSinceLastHabiliy += Time.deltaTime;
 
