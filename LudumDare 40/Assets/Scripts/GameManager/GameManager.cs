@@ -76,6 +76,11 @@ public class GameManager : MonoBehaviour
 				StartCoroutine(OnLevelEnded());
 			}
 		}
+
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			SceneManager.LoadScene("Menu");
+		}
 	}
 
     //-------------------------------------------
@@ -185,6 +190,7 @@ public class GameManager : MonoBehaviour
 		// TODO: Fade??
 
 		// TODO: Serialize points data and change scene
+		SceneManager.LoadScene("Menu");
 	}
 
 	// -------------------------------------------
