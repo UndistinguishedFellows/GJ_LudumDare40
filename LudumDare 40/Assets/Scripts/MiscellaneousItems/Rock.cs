@@ -95,4 +95,10 @@ public class Rock : MonoBehaviour
 		// TODO: Can play an animation to decrease the alpha and destroy it after that
 		Destroy(gameObject, 1f);
 	}
+
+	void OnDrawGizmos()
+	{
+		Gizmos.color = Color.red;
+		Gizmos.DrawWireSphere(transform.position, noiseRadius);
+	}
 }
