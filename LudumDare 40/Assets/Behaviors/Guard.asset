@@ -14,7 +14,7 @@ MonoBehaviour:
   brickName: Assets/Behaviors/Guard.asset
   xml: "\uFEFF<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<BehaviorBricks xmlns:ref=\"urn:padaone\"
     version=\"1.0\">\r\n  <BehaviorTree id=\"0\" />\r\n  <runtimeInfo>\r\n    <BehaviorTree
-    id=\"0\" guid=\"f12564c7d3172014a91e64e22d9a9d8d\" nextId=\"71\">\r\n      <root>\r\n
+    id=\"0\" guid=\"f12564c7d3172014a91e64e22d9a9d8d\" nextId=\"72\">\r\n      <root>\r\n
     \       <RepeatDecorator id=\"1\" />\r\n      </root>\r\n      <inputParams>\r\n
     \       <inputValues>\r\n          <entry name=\"Graph\" type=\"NodeManager\"
     isBlackboard=\"False\" />\r\n          <entry name=\"Player\" type=\"UnityEngine.GameObject\"
@@ -71,14 +71,15 @@ MonoBehaviour:
     \       <inputValues>\r\n          <entry name=\"target\" type=\"UnityEngine.GameObject\"
     isBlackboard=\"True\" blackboard=\"Player\" />\r\n        </inputValues>\r\n      </inputParams>\r\n
     \     <outputParams />\r\n      <localParams />\r\n    </ActionNode>\r\n    <ConditionEvalNode
-    id=\"68\" policy=\"ATOMIC_CHECK\" name=\"Perrception/HeardSomething\">\r\n      <inputParams
-    />\r\n      <outputParams>\r\n        <outputValues>\r\n          <entry name=\"NoiseTarget\"
-    type=\"UnityEngine.Vector3\" isBlackboard=\"True\" blackboard=\"NoiseTarget\"
+    id=\"68\" policy=\"WAIT_UNTIL_FALSE_AND_FAIL\" name=\"Perrception/HeardSomething\">\r\n
+    \     <inputParams />\r\n      <outputParams>\r\n        <outputValues>\r\n          <entry
+    name=\"NoiseTarget\" type=\"UnityEngine.Vector3\" isBlackboard=\"True\" blackboard=\"NoiseTarget\"
     />\r\n        </outputValues>\r\n      </outputParams>\r\n      <localParams />\r\n
     \   </ConditionEvalNode>\r\n    <SequenceNode id=\"67\">\r\n      <children>\r\n
-    \       <elem>\r\n          <ActionNode id=\"70\" />\r\n        </elem>\r\n      </children>\r\n
+    \       <elem>\r\n          <ActionNode id=\"70\" />\r\n        </elem>\r\n        <elem>\r\n
+    \         <ActionNode id=\"71\" />\r\n        </elem>\r\n      </children>\r\n
     \     <inputParams />\r\n      <outputParams />\r\n      <localParams />\r\n    </SequenceNode>\r\n
-    \   <ConditionEvalNode id=\"41\" policy=\"WAIT_UNTIL_FALSE_AND_FAIL\" name=\"AlwaysTrue\">\r\n
+    \   <ConditionEvalNode id=\"41\" policy=\"WAIT_UNTIL_TRUE_AND_COMPLETE\" name=\"AlwaysTrue\">\r\n
     \     <inputParams />\r\n      <outputParams />\r\n      <localParams />\r\n    </ConditionEvalNode>\r\n
     \   <SequenceNode id=\"39\">\r\n      <children>\r\n        <elem>\r\n          <PrioritySelectorNode
     id=\"20\" />\r\n        </elem>\r\n        <elem>\r\n          <ActionNode id=\"3\"
@@ -87,7 +88,9 @@ MonoBehaviour:
     action=\"Navigation/MoveToPosition\">\r\n      <inputParams>\r\n        <inputValues>\r\n
     \         <entry name=\"target\" type=\"UnityEngine.Vector3\" isBlackboard=\"True\"
     blackboard=\"NoiseTarget\" />\r\n        </inputValues>\r\n      </inputParams>\r\n
-    \     <outputParams />\r\n      <localParams />\r\n    </ActionNode>\r\n    <PrioritySelectorNode
+    \     <outputParams />\r\n      <localParams />\r\n    </ActionNode>\r\n    <ActionNode
+    id=\"71\" action=\"Basic/ReturnToPatrol\">\r\n      <inputParams />\r\n      <outputParams
+    />\r\n      <localParams />\r\n    </ActionNode>\r\n    <PrioritySelectorNode
     id=\"20\">\r\n      <children>\r\n        <elem>\r\n          <GuardAndNode>\r\n
     \           <guard>\r\n              <ConditionEvalNode id=\"47\" />\r\n            </guard>\r\n
     \           <child>\r\n              <ActionNode id=\"30\" />\r\n            </child>\r\n
@@ -135,12 +138,12 @@ MonoBehaviour:
     />\r\n          <ConditionEvalNode id=\"55\" />\r\n          <ActionNode id=\"65\"
     />\r\n          <ConditionEvalNode id=\"66\" />\r\n          <ActionNode id=\"60\"
     />\r\n          <SequenceNode id=\"67\" />\r\n          <ConditionEvalNode id=\"68\"
-    />\r\n          <ActionNode id=\"70\" />\r\n        </nodes>\r\n      </_nodes>\r\n
-    \     <_selectedNode>\r\n        <ConditionEvalNode id=\"68\" />\r\n      </_selectedNode>\r\n
-    \   </BehaviorTree>\r\n    <RepeatDecorator id=\"1\">\r\n      <_data>\r\n        <data
-    selected=\"False\" position=\"1505.871 36.88926\" name=\"Repeat\" description=\"Repeats
-    the execution of its child node\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
-    id=\"0\" />\r\n          <RepeatDecorator id=\"1\" />\r\n        </data>\r\n      </_data>\r\n
+    />\r\n          <ActionNode id=\"70\" />\r\n          <ActionNode id=\"71\" />\r\n
+    \       </nodes>\r\n      </_nodes>\r\n    </BehaviorTree>\r\n    <RepeatDecorator
+    id=\"1\">\r\n      <_data>\r\n        <data selected=\"False\" position=\"1505.871
+    36.88926\" name=\"Repeat\" description=\"Repeats the execution of its child node\"
+    cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree id=\"0\" />\r\n
+    \         <RepeatDecorator id=\"1\" />\r\n        </data>\r\n      </_data>\r\n
     \   </RepeatDecorator>\r\n    <PrioritySelectorNode id=\"40\">\r\n      <_data>\r\n
     \       <data selected=\"False\" position=\"1474.286 285.2782\" name=\"Priority
     Selector\" description=\"Executes all its children, starting from the one with
@@ -169,7 +172,7 @@ MonoBehaviour:
     cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree id=\"0\" />\r\n
     \         <ActionNode id=\"42\" />\r\n          <ConditionEvalNode id=\"43\" />\r\n
     \       </data>\r\n      </_data>\r\n    </ActionNode>\r\n    <ConditionEvalNode
-    id=\"68\">\r\n      <_data>\r\n        <data selected=\"True\" position=\"0 0\"
+    id=\"68\">\r\n      <_data>\r\n        <data selected=\"False\" position=\"0 0\"
     name=\"Perrception/HeardSomething\" description=\"Checks if has heard something\"
     cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree id=\"0\" />\r\n
     \         <ConditionEvalNode id=\"68\" />\r\n          <PrioritySelectorNode id=\"40\"
@@ -194,6 +197,11 @@ MonoBehaviour:
     the game object to a given position by using a NavMeshAgent\" cardinality=\"0\"
     hasParent=\"True\">\r\n          <BehaviorTree id=\"0\" />\r\n          <ActionNode
     id=\"70\" />\r\n          <SequenceNode id=\"67\" />\r\n        </data>\r\n      </_data>\r\n
+    \   </ActionNode>\r\n    <ActionNode id=\"71\">\r\n      <_data>\r\n        <data
+    selected=\"False\" position=\"1485.526 742.105\" name=\"Basic/ReturnToPatrol\"
+    description=\"Returns to patrol state\" cardinality=\"0\" hasParent=\"True\">\r\n
+    \         <BehaviorTree id=\"0\" />\r\n          <ActionNode id=\"71\" />\r\n
+    \         <SequenceNode id=\"67\" />\r\n        </data>\r\n      </_data>\r\n
     \   </ActionNode>\r\n    <PrioritySelectorNode id=\"20\">\r\n      <_data>\r\n
     \       <data selected=\"False\" position=\"1617.405 772.9388\" name=\"Priority
     Selector\" description=\"Executes all its children, starting from the one with

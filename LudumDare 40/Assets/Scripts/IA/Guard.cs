@@ -25,19 +25,7 @@ public class Guard : MonoBehaviour
 		}
 	void Update()
 		{
-			//This is a fucking shit but idk how to acces to the blackboard...
-			List<string> names = executor.blackboard.intParamsNames;
-			List<int> flags = executor.blackboard.intParams;
-			int GameOver = 0;
-			for (int i = 0; i < names.Count; ++i)
-			{
-				if (names[i].Equals("GameOver"))
-				{
-					GameOver = flags[i];
-				}
-			}
-			if(GameOver > 0)
-				Debug.Log("GameOver");
+			
 		}
 
 	void OnDrawGizmos()
