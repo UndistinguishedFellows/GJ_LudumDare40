@@ -325,7 +325,7 @@ public class CharacterMovement : MonoBehaviour
 
 						case 2:
 						{
-							Dash();
+							//Dash();
 							break;
 						}
 					}
@@ -463,9 +463,9 @@ public class CharacterMovement : MonoBehaviour
         
         foreach(Image skill in skillsImages)
         {
-            skill.color = Color.white;
+            skill.color = Color.grey;
         }
-        skillsImages[skillFocus].color = Color.blue;
+        skillsImages[skillFocus].color = Color.white;
     }
 
 	public void SetEnergyCost(int value)
