@@ -21,6 +21,8 @@ Controls:
 Pleace feel free to report any issues you see on our github.
 [Issues: https://github.com/UndistinguishedFellows/LudumDare40/issues](https://github.com/UndistinguishedFellows/LudumDare40/issues)
 
+We are the UndistinguishedFellows:
+
 Aleix Cardona
 Josep Casanovas
 Josep M. Monrabà
